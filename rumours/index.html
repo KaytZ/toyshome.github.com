@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/base.min.css"/>
+    <title>谣言大作战</title>
+    <script type="text/javascript">
+        var cssEl = document.createElement('style');
+        document.documentElement.firstElementChild.appendChild(cssEl);
+        function setPxPerRem(){
+            var dpr = 1;
+            //把viewport分成50份的rem，html标签的font-size设置为1rem的大小;
+            var pxPerRem = document.documentElement.clientWidth * dpr / 50;
+            cssEl.innerHTML = 'html{font-size:' + pxPerRem + 'px!important;}';
+        }
+        setPxPerRem();
+    </script>
+</head>
+<body>
+	<div class="ac">
+		<img src="img/icon.png" class="index-img1"/><br />
+		<img src="img/logo1.png" class="logo1"/>
+	<div>
+	<div class="tip1 font2">
+		看准以后再选~以防手抖误点击哦~
+	</div>
+	<div style="margin-top:5rem;color:#fff;">强迫症请勿参与，本作战耗时8分钟左右</div>
+	<button class="btn-begin">开始作战</button>
+	<p class="ac mart" style="color:#47D2EC">好7喵&好奇实验室出品</p>
+	<script type="text/javascript">
+		document.getElementsByClassName("btn-begin")[0].onclick=function(){
+			window.location.href="questions.html";
+		}
+	</script>
+</body>
+</html>

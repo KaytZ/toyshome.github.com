@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/base.min.css"/>
+    <title>谣言大作战</title>
+    <script type="text/javascript">
+        var cssEl = document.createElement('style');
+        document.documentElement.firstElementChild.appendChild(cssEl);
+        function setPxPerRem(){
+            var dpr = 1;
+            //把viewport分成50份的rem，html标签的font-size设置为1rem的大小;
+            var pxPerRem = document.documentElement.clientWidth * dpr / 50;
+            cssEl.innerHTML = 'html{font-size:' + pxPerRem + 'px!important;}';
+        }
+        setPxPerRem();
+    </script>
+</head>
+<body>
+	<div id="screeArea" style="padding:2rem 0">
+	<div class="ac mart">
+		<img src="img/logo1.png" class="logo1"/>
+		<p class="ac font1 tx1">Amazing!我答对了<span class="correct-count"></span>题</p>
+	</div>
+	<div class="tx2">知识图谱</div>
+	<!--
+    	时间：2016-08-04
+    	描述：图表echarts
+    -->
+	<div class="echarts">
+		<img src="img/loading.png" class="loading"/>
+		<div class="loadingtext">答题数据正在加载中......</div>
+	</div>
+	
+	<!--
+    	时间：2016-08-04
+    	描述：底部二维码和按钮
+    -->
+	<div class="erweima ac">
+		<img src="img/erweima_haoqi.jpg" class="erweima-s"/>
+		<span class="tx3">长按识别二维码，开始挑战吧！</span>
+	</div>
+	</div>
+	<div class="mart ac marb">
+		<button class="btn-answer marr">查看答案</button>
+		<button class="btn-prtSc" onclick="printScreen()">保存截图</button>
+	</div>
+	<!--
+    	时间：2016-08-04
+    	描述：二维码弹窗，z-index：10
+    -->
+    <div class="pop hide">
+    	<img src="img/erweima_daan.png" class="erweima-l"/>
+    	<span style="color:#fff;" class="font3">长按扫码关注[好七喵]回复<span style="color:#FF7000;">[答案]</span>获取答案</span>
+    </div>
+    <!--
+    	时间：2016-08-04
+    	描述：截屏容器，z-index:100
+    -->
+    <div class="printScreen hide">
+    	<p>请长按图片保存到手机<br>保存失败的同学请手动截图</p>
+    </div>
+    
+	<script src="js/jquery.min.js"></script>
+	<script src="js/echarts.min.js"></script>
+	<script src="js/html2canvas.min.js"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script>
+	//获取统计结果数据
+		var arr=localStorage.getItem("arr");
+		var arr=arr.split(",");
+		var tag=localStorage.getItem("tag");console.log(tag);
+		var sum=0;
+		for(var i in arr){
+			sum+=parseInt(arr[i]);
+		}
+		$(".correct-count").text(sum);
+		//wx.config({
+//  		debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+//  		appId: 'wx8d8e3a94adbd02f7', // 必填，公众号的唯一标识
+//  		timestamp:'' , // 必填，生成签名的时间戳
+//  		nonceStr: '', // 必填，生成签名的随机串
+//  		signature: '',// 必填，签名，见附录1
+  		//jsApiList: [ onMenuShareTimeline,onMenuShareAppMessage,onMenuShareQQ,onMenuShareWeibo,onMenuShareQZone ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		//});
+		wx.ready(function(){
+			//分享到QQ
+			wx.onMenuShareQQ({
+    			title: '我在谣言大作战里答对了'+sum+'道题！', // 分享标题
+    			desc: '我最擅长的领域竟然是'+tag, // 分享描述
+    			link: 'http://172.16.31.148:8022/rumours/result.html', // 分享链接
+    			imgUrl: 'http://172.16.31.148:8022/rumours/img/share.jpg', // 分享图标
+    			success: function () { 
+       			// 用户确认分享后执行的回调函数
+    			},
+    			cancel: function () { 
+      			 // 用户取消分享后执行的回调函数
+   		 		}
+			});
+			//分享到朋友圈
+			wx.onMenuShareTimeline({
+    			title: '', // 分享标题
+    			link: '', // 分享链接
+    			imgUrl: '', // 分享图标
+    			success: function () { 
+        			// 用户确认分享后执行的回调函数
+    			},
+    			cancel: function () { 
+        			// 用户取消分享后执行的回调函数
+    			}
+			});
+			//分享给朋友
+			wx.onMenuShareAppMessage({
+    			title: '', // 分享标题
+    			desc: '', // 分享描述
+    			link: '', // 分享链接
+    			imgUrl: '', // 分享图标
+    			type: '', // 分享类型,music、video或link，不填默认为link
+    			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+    			success: function () { 
+        			// 用户确认分享后执行的回调函数
+    			},
+    			cancel: function () { 
+        		// 用户取消分享后执行的回调函数
+   				}
+			});
+			//分享到微博
+			wx.onMenuShareWeibo({
+    			title: '', // 分享标题
+    			desc: '', // 分享描述
+    			link: '', // 分享链接
+    			imgUrl: '', // 分享图标
+    			success: function () { 
+       				// 用户确认分享后执行的回调函数
+    			},
+    			cancel: function () { 
+        			// 用户取消分享后执行的回调函数
+    			}
+			});
+			//分享到QQ空间
+			wx.onMenuShareQZone({
+    			title: '', // 分享标题
+    			desc: '', // 分享描述
+    			link: '', // 分享链接
+    			imgUrl: '', // 分享图标
+    			success: function () { 
+       				// 用户确认分享后执行的回调函数
+    			},
+    			cancel: function () { 
+        			// 用户取消分享后执行的回调函数
+    			}
+			});
+		})
+	/*
+	  底部按钮事件
+	 */
+	$(".btn-answer").on("click",function(event){
+		 event.stopPropagation();
+		$(".pop").show();
+	})
+	$(window).on("click",function(event){
+		if(event.target!=$(".pop")[0]&&event.target!=$(".pop img")[0]&&event.target!=$(".pop span")[0]){
+			$(".pop").hide();
+		}
+	})
+	//截屏
+	var pop=document.querySelector(".printScreen");
+	function printScreen(){
+//		 $(".echarts").css("opacity",0);
+		html2canvas(document.getElementById("screeArea"), { 
+			allowTaint: true,
+			taintTest: false,
+			onrendered: function(canvas) { 
+				    canvas.id = "mycanvas";
+				    //生成base64图片数据 
+				    var dataUrl =canvas.toDataURL(); 
+				    var newImg = document.createElement("img");
+				    newImg.src = dataUrl; 
+				    pop.style.display="block";
+			        pop.appendChild(newImg);
+			}
+		});
+	}
+      pop.onclick=function(){
+	  this.removeChild(document.querySelector(".printScreen img"));
+	  this.style.display="none";
+	}
+	
+	/*
+	  echarts数据 
+	  */
+	var mychart=echarts.init(document.getElementsByClassName("echarts")[0]);
+	var option = {
+		//	title: {
+		//text: '基础雷达图'
+		//	},
+	tooltip: {
+		 position: ['50%', '50%']
+	},
+	radar: {
+		// shape: 'circle',
+		indicator: [{
+			name: '物理',
+			max: 10
+		}, {
+			name: '生活',
+			max: 10
+		}, {
+			name: '植物',
+			max: 10
+		}, {
+			name: '性',
+			max: 10
+		}, {
+			name: '健康',
+			max: 10
+		}, {
+			name: '化学',
+			max: 10
+		}
+		, {
+			name: '动物',
+			max: 10
+		}, {
+			name: '母婴',
+			max: 10
+		}, {
+			name: '科技',
+			max: 10
+		}, {
+			name: '医学',
+			max: 10
+		}],
+		radius:70,
+		splitArea: {
+                areaStyle: {
+                    color: ['rgba(22, 64, 109, 0.3)',
+                    'rgba(114, 172, 209, .5)', 'rgba(114, 172, 209, .8)',
+                    'rgba(114, 172, 209, 1)', 'rgba(114, 172, 209, 1)'],
+                    shadowColor: 'rgba(0, 0, 0, 0.3)',
+                    shadowBlur: 10
+                }
+         },
+         center:['50%','50%'],
+         name: {
+                textStyle: {
+                    color:'#FFF'
+                }
+            },
+	},
+	series: [{
+		type: 'radar',
+		data: [{
+			value: arr,
+			name: '题型分布',
+			areaStyle: {
+                        normal: {
+                            opacity: 0.8,
+                            color: new echarts.graphic.RadialGradient(0.5, 0.5, 1, [
+                                {
+                                    color: '#e4393c',
+                                    offset: 0
+                                },
+                                {
+                                    color: '#72ACD1',
+                                    offset: 1
+                                }
+                            ])
+                        }
+                    },
+			label: {
+                    normal: {
+                        show: true,
+                        textStyle:{
+                        	color:"yellow"
+                        },
+                        formatter:function(params) {
+                            return params.value;
+                            }
+                        }
+                    }
+		}]
+	}]
+};
+  mychart.setOption(option);
+  localStorage.removeItem("result");
+  localStorage.removeItem("tag");
+</script>
+</body>
+</html>

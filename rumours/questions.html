@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/base.min.css"/>
+    <title>谣言大作战</title>
+    <script type="text/javascript">
+        var cssEl = document.createElement('style');
+        document.documentElement.firstElementChild.appendChild(cssEl);
+        function setPxPerRem(){
+            var dpr = 1;
+            var pxPerRem = document.documentElement.clientWidth * dpr / 50;
+            cssEl.innerHTML = 'html{font-size:' + pxPerRem + 'px!important;}';
+        }
+        setPxPerRem();
+    </script>
+</head>
+<body>
+	<!--
+    	时间：2016-08-03
+    	描述：遮罩层,z-index:100
+    -->
+	<div class="question-mask"></div>
+	<!--
+    	时间：2016-08-03
+    	描述：题目区域
+    -->
+	<div class="question-content clearfix">
+		<div class="fl qID-content">
+			<div class="bd-circle ac qID">1/100</div>
+			<div class="tag font4 ac"><a>物理</a></div>
+		</div>
+		<div class="fr question font1">
+		</div>
+		<div class="judge"/>
+			<img src="img/yes.png"/>
+		</div>
+	</div>
+	<!--
+    	时间：2016-08-05
+    	描述：倒计时时钟,z-index:1000
+    -->
+    <div class="countdown ac">5</div>
+	<!--
+    	时间：2016-08-03
+    	描述：选项
+    -->
+	<div class="options">
+			<div class="ac">
+				<button class="option1" option="yes">是</button>
+			</div>
+			<div class="ac">
+				<button class="option2" option="no">否</button>
+			</div>
+	</div>
+	<!--
+    	时间：2016-08-03
+    	描述：footer,z-index:10
+    -->
+    <div class="footer ac">
+    	<img src="img/logo2.png"/>
+    </div>
+    <input type="hidden" />
+    <div class="loadingMask">
+    	<div class="ac">题目加载中...<img src="img/loading.png" class="loading2"/></div>
+    </div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/velocity.js"></script>
+	<script>
+		$(function(){
+			var qid=1;//题目id,默认1开始
+			var jsonLength = 0;
+			var arr=[];
+			var time=5;//默认倒计时5秒	
+			var clock=null;//定时器函数
+			var result={
+							"物理":0,"生活":0,"植物":0,"性":0,"健康":0,
+							"化学":0,"动物":0,"母婴":0,"科技":0,"医学":0
+					}
+			var tagColor=["#fc7c23","#f4c92e","#d13f4a","#745260","#7578fb","#d0517d",
+						  "#2d3e50","#297fb8","#1cb782","#fd6f70"];
+			
+			function getJsonLength(jsonData){
+				for(var item in jsonData){ jsonLength++; } 
+					return jsonLength;
+			}			
+
+			//页面加载初始化数据
+			$.getJSON("question.json",function(question){
+				getJsonLength(question);
+				$(".tag a").css("color",tagColor[0]);
+				$(".question").text(question[0].question);
+				$(".qID").text("1/100");
+				$(".tag a").text(question[0].tag);
+				$(".loadingMask").hide();
+			})
+			
+			var opt_offTop=$(".option1").offset().top;//回答按钮距离顶部高度
+			$(".question-mask").height(opt_offTop);//根据opt_offTop初始化遮罩层的位置和高度
+			$(".question-mask").css("top",-opt_offTop);
+			
+			//切换题目之后动画重置
+			function animateReset(){
+				time=5;
+				$(".countdown").css("background-color","rgb(0,221,153)")
+				$(".countdown").text("5");
+				$(".options button").removeClass("yes");
+				$(".options button").removeClass("no");
+				$(".options button").css("top",0);
+				$(".options button").css("opacity",1);
+				$(".options button").removeAttr("disabled");
+				opt_offTop=$(".option1").offset().top;//alert(opt_offTop);
+				$(".question-mask").height(opt_offTop);
+				$(".question-mask").css("top",-opt_offTop);
+			}
+			//切换下一题
+			function nextQuesetion(question){
+				$(".question").text(question.question);
+				$(".qID").text(qid+"/100");
+				$(".tag a").text(question.tag);
+				$(".judge img").css("opacity",0);
+				var progLen=$(".qID").text().length;
+				if(progLen==6){
+					$(".qID").css("font-size","2.5rem");
+				}
+				if(progLen==7){
+					$(".qID").css("font-size","2rem");
+				}
+				var tIndex=Math.floor((qid-1)/10);
+				$(".tag a").css("color",tagColor[tIndex]);
+				// ......
+			}
+			
+			//动画暂停
+			function stopAnimate(){
+				$(".question-mask").velocity("stop");
+				$(".option1").velocity("stop");
+				$(".option2").velocity("stop");
+				clearInterval(clock);
+			}
+			//切割动画
+			var color=["#FF6600","#FF9900","#FFCC00","#CCFF00","#66FF00"];
+			function cutdown(){
+				clock=setInterval(function(){
+					if(time>0){
+						$(".countdown").text(--time);
+						$(".countdown").css("background-color",color[time]);
+					}
+					if(time==0){
+						clearInterval(clock);
+						$(".countdown").css("background-color",color[time]);
+					}
+				},1000)
+				
+				$(".question-mask").velocity({top:0},{duration:5000,
+					begin:function(){qid++;}
+				});
+				$(".option1").velocity({top:"20rem",opacity:0},{duration:500,delay:5000});
+				$(".option2").velocity({top:"22rem",opacity:0},{duration:500,delay:5200,
+					complete:function(){
+						if(qid<jsonLength+1){
+							$.getJSON("question.json",function(data){
+								nextQuesetion(data[qid-1]);
+								animateReset();
+								cutdown();
+							})
+						}
+						if(qid==jsonLength+1){
+							for(var k in result){
+								arr.push(result[k]);
+							}
+							var arr_max=Math.max.apply(null,arr);
+							var max_index=arr.indexOf(arr_max);
+							$.getJSON("question.json",function(data){
+								var tag=data[max_index*10].tag;
+								localStorage.tag=tag;
+							})
+							localStorage.arr=arr;
+							clearInterval(clock);
+							window.location.href="result.html";
+						}
+					}
+				});
+			}
+			cutdown();//执行动画
+			
+			$(".options button").on("click",function(){
+				var _this=$(this);
+				stopAnimate();
+				if(qid<jsonLength+1){
+					//判断答题正确或错误
+					$.getJSON("question.json",function(data){
+						if(_this.attr("option")==data[qid-2].answer){
+							_this.addClass("yes");
+							$(".judge img").attr("src","img/yes.png");
+							$(".judge img").velocity({scale:3},{duration:10}).velocity({opacity:1,scale:1},{duration:500});
+							result[data[qid-2].tag]++;
+						}else{
+							_this.addClass("no");
+							$(".judge img").attr("src","img/no.png");
+							$(".judge img").velocity({scale:3},{duration:10}).velocity({opacity:1,scale:1},{duration:500});
+						}
+						stopAnimate();
+						//防止按钮变色的时间内，用户又点击了答案按钮
+						$(".options button").attr("disabled","disabled");
+						setTimeout(function(){
+							nextQuesetion(data[qid-1]);
+							animateReset();
+							cutdown();
+						},600);
+					})
+				}
+				if(qid==jsonLength+1){
+					//最后一题答完立即跳转结果页面
+					$.getJSON("question.json",function(data){
+						if(_this.attr("option")==data[qid-2].answer){
+							_this.addClass("yes");
+							$(".judge img").attr("src","img/yes.png");
+							$(".judge img").velocity({scale:3},{duration:10}).velocity({opacity:1,scale:1},{duration:500});
+							result[data[qid-2].tag]++;
+						}else{
+							_this.addClass("no");
+							$(".judge img").attr("src","img/no.png");
+							$(".judge img").velocity({scale:3},{duration:10}).velocity({opacity:1,scale:1},{duration:500});
+						}
+						
+							
+						stopAnimate();
+						$(".judge").width(0);
+						for(var k in result){
+								arr.push(result[k]);
+							}
+						var arr_max=Math.max.apply(null,arr);
+						var max_index=arr.indexOf(arr_max);
+							localStorage.arr=arr;
+						var tag=data[max_index*10].tag;
+							localStorage.tag=tag;
+						setTimeout(function(){
+							window.location.href="result.html";
+						},600);
+					})
+				}
+			})
+		})
+		
+	</script>
+</body>
+</html>
