@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="stylesheet" type="text/css" href="css/base.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
     <title>谣言大作战</title>
     <script type="text/javascript">
         var cssEl = document.createElement('style');
@@ -47,12 +47,15 @@
     	描述：选项
     -->
 	<div class="options">
-			<div class="ac">
-				<button class="option1" option="yes">是</button>
-			</div>
-			<div class="ac">
-				<button class="option2" option="no">否</button>
-			</div>
+		<div class="ac">
+			<button class="option1" option="yes">是</button>
+		</div>
+		<div class="ac">
+			<button class="option2" option="no">否</button>
+		</div>
+	</div>
+	<div class="ac" style="margin-top:30px">
+		<button class="option3">提前提交(临时添加的测试按钮)</button>
 	</div>
 	<!--
     	时间：2016-08-03
@@ -74,6 +77,7 @@
 			var arr=[];
 			var time=5;//默认倒计时5秒	
 			var clock=null;//定时器函数
+			var data;
 			var result={
 							"物理":0,"生活":0,"植物":0,"性":0,"健康":0,
 							"化学":0,"动物":0,"母婴":0,"科技":0,"医学":0
@@ -87,13 +91,27 @@
 			}			
 
 			//页面加载初始化数据
-			$.getJSON("question.json",function(question){
-				getJsonLength(question);
-				$(".tag a").css("color",tagColor[0]);
-				$(".question").text(question[0].question);
-				$(".qID").text("1/100");
-				$(".tag a").text(question[0].tag);
-				$(".loadingMask").hide();
+//			$.getJSON("question.json",function(question){
+//				getJsonLength(question);
+//				$(".tag a").css("color",tagColor[0]);
+//				$(".question").text(question[0].question);
+//				$(".qID").text("1/100");
+//				$(".tag a").text(question[0].tag);
+//				$(".loadingMask").hide();
+//			})
+			
+			$.ajax({
+				url:"question.json",
+				async:false,
+				success:function(question){
+					getJsonLength(question);
+					$(".tag a").css("color",tagColor[0]);
+					$(".question").text(question[0].question);
+					$(".qID").text("1/100");
+					$(".tag a").text(question[0].tag);
+					$(".loadingMask").hide();
+					data=question;
+				}
 			})
 			
 			var opt_offTop=$(".option1").offset().top;//回答按钮距离顶部高度
@@ -229,8 +247,8 @@
 						stopAnimate();
 						$(".judge").width(0);
 						for(var k in result){
-								arr.push(result[k]);
-							}
+							arr.push(result[k]);
+						}
 						var arr_max=Math.max.apply(null,arr);
 						var max_index=arr.indexOf(arr_max);
 							localStorage.arr=arr;
@@ -241,6 +259,22 @@
 						},600);
 					})
 				}
+			})
+			$(".option3").on("click",function(){
+				stopAnimate();
+				$(".judge").width(0);
+				for(var k in result){
+					arr.push(result[k]);
+				}
+				var arr_max=Math.max.apply(null,arr);
+				console.log(arr_max)
+				var max_index=arr.indexOf(arr_max);
+				localStorage.arr=arr;
+				var tag=data[max_index*10].tag;
+				localStorage.tag=tag;
+				setTimeout(function(){
+					window.location.href="result.html";
+				},600);
 			})
 		})
 		
