@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/laoxia.css"/>
+	<script type="text/javascript">
+		/*根据clientWidth自动调整html结点的font-size*/
+		var cssEl=document.createElement('style');
+		document.documentElement.firstElementChild.appendChild(cssEl);
+		function setPxPerRem(){
+			var dpr=1;
+			var pxPerRem=document.documentElement.clientWidth*dpr/10;
+			cssEl.innerHTML='html{font-size:'+pxPerRem+'px !important}';
+		}
+		setPxPerRem();
+	</script>
+</head>
+<body>
+	<div class="main-bg">
+		<div class="tx-c title-list">
+		<img src="images/title_03.png" class="title-03"/>
+		<div class="fail-tip-01">您没有捞到虾</div>
+		<div class="fail-tip-02">分享给好友能多一次捞虾机会</div>
+		</div>
+		<div class="tx-c">
+			<span class="restChances">您今日还有2次机会</span>
+		</div>
+		<img src="images/click.png" class="clickMe">
+		<div class="laoxia">
+			<div class="animate-box">
+				<img src="images/net.png" class="net v-hide"/>
+				<img src="images/xia.png" class="xia"/>
+			</div>
+		</div>
+		<div class="mask"></div>
+		<div class="bg-xia-group">
+			<img src="images/xia3.png" class="bg-xia xia-1 move-right"/>
+			<img src="images/xia2.png" class="bg-xia xia-2 move-left"/>
+			<img src="images/xia3.png" class="bg-xia xia-3 move-right"/>
+			<img src="images/xia2.png" class="bg-xia xia-4 move-left"/>
+			<img src="images/xia2.png" class="bg-xia xia-5 move-left"/>
+		</div>
+		<div class="lotteryList">
+			<ul>
+				<li class="tx-c">恭喜<span class="teleNum">139****6543</span>捞到5元抵扣券</li>
+			</ul>
+		</div>
+		<div class="tx-c laoxia-rule">捞虾规则详情</div>
+		<div class="tx-c v-hide">分享给好友更能多一次捞虾机会</div>
+		<div class="btn-group tx-c">
+			<button class="surprise">点我有惊喜</button>
+			<button class="btn-share">分享好友多捞一次</button>
+		</div>
+		<!--
+        	描述：分享弹出框
+        -->
+		<div class="mui-popup mui-popup-in shareTo" style="display:none;">
+		<div class="mui-popup-inner">
+			<div class="share-title">分享到</div>
+			<div class="txt-1">分享给微信好友或朋友圈，多一次捞虾机会</div>
+			<div class="uof share">
+				<div class="fl shareItem">
+					<img src="images/wechat 1.png"/>
+					<div class="icon-text">微信好友</div>
+				</div>
+				<div class="fr shareItem">
+					<img src="images/wechat 2.png"/>
+					<div class="icon-text">微信朋友圈</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--弹出层：连续5天捞虾 Begin-->
+	<div class="mui-popup mui-popup-in catchFiveDays" style="display: none;">
+		<div class="mui-popup-inner">
+			<div class="share-title">美洲大龙虾来啦！</div>
+			<div class="txt-2">连续五天来捞虾，可获得捞美洲大龙虾机会一次大龙虾最高返现99元！！</div>
+			<ul class="fiveDays">
+				<li>
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-20</div>
+					<div>已捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-21</div>
+					<div>未捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-22</div>
+					<div>未捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-23</div>
+					<div>未捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia01.png" class="l-xia"/>
+					<div>6-24</div>
+					<div>未捞虾</div>
+				</li>
+			</ul>
+			<div class="txt-1">再连续捞虾4天，就可以捞大龙虾啦！</div>
+			<div>
+				<button type="button" class="mui-btn mui-btn-warning go-on">好的，继续捞</button>
+			</div>
+		</div>
+	</div>
+	<!--连续5天捞虾 End-->
+	<!--遮罩层-->
+	<div class="mui-popup-backdrop mui-active" style="display: none;"></div>
+	</div>
+	<script src="js/mui.min.js"></script>	
+	<script src="js/jquery.js"></script>
+	<script src="js/velocity.js"></script>
+	<script>
+		$(function(){
+			$(".main-bg").height($(window).width()*(1206/750));
+			$(".clickMe").on("tap",function(){
+				/*动画函数*/
+				//动画进行过程中不能再次点击该按钮，动画结束后的回调函数重新绑定该tap事件
+				$(this).velocity({scaleX:1.1,scaleY:1.1},{loop:1});
+				$(this).off("tap");
+				laoxiaAnimate();
+			});
+		/*背景动画*/
+		function bgAnimate(){
+			$(".xia-1").velocity({translateY:".1rem"},{duration:500,loop:true});
+			$(".xia-3").velocity({translateX:".075rem"},{duration:500,loop:true});
+			$(".xia-2").velocity({translateY:".1rem"},{duration:1000,loop:true});
+			$(".xia-4").velocity({translateX:"-.075rem",translateY:".1rem"},{duration:800,loop:true});
+			$(".xia-5").velocity({translateX:"-.2rem",translateY:"-.3rem"},{duration:1000,loop:true});
+		}
+		bgAnimate();
+		/*捞虾动画*/
+		function laoxiaAnimate(){
+			$(".xia").css("opacity","0");
+			$(".net").removeClass("v-hide");
+			$(".animate-box").velocity({rotateZ:-45},{duration:500}).velocity({translateX:"-.8rem",translateY:".8rem"},{duration:500})
+			.velocity({translateX:"-1.5rem",translateY:"0.1rem"},{duration:500}).velocity({translateX:".1rem",translateY:"1.6rem"},{duration:1000})
+			.velocity({translateX:"-1.5rem",translateY:"0.1rem"},{duration:1000,
+				complete:function(){
+					//获取抽奖结果,如果抽中了则龙虾显示
+					$(".xia").css("opacity","1");
+					//否则 $(".xia").css("opacity","0");
+				}
+			})
+			.velocity({translateX:".4rem",rotateZ:0},{duration:500,
+				complete:function(){
+					//抽奖结果
+					//抽中了则跳转中奖页面
+					laoxiaSuccess();
+					//否则  laoxiaFail();
+				}
+			});
+			$(".mask").velocity({zIndex:10},{delay:0});
+			$(".bg-xia-group").hide();
+		}
+		/***捕捞结果***/
+		function laoxiaFail(){ //没中奖
+			window.location.href="laoxia-fail.html";
+		}
+		function laoxiaSuccess(){//中奖了
+			window.location.href="laoxia-success.html";
+		}
+		/*点击分享*/
+      	$(".btn-share").on("tap",function(){
+      		$(".mui-popup-backdrop,.shareTo").show();
+      	})
+      	/*点击惊喜*/
+      	$(".surprise").on("tap",function(){
+      		$(".mui-popup-backdrop,.catchFiveDays").show();
+      	})
+      	/*点击遮罩层关闭弹窗*/
+      	$(".mui-popup-backdrop").on("tap",function(){
+      		$(".mui-popup-backdrop,.shareTo,.catchFiveDays").hide();
+      	})
+      	$(".go-on").on("tap",function(){
+      		$(".mui-popup-backdrop,.catchFiveDays").hide();
+      	})
+    })
+	</script>
+</body>
+</html>

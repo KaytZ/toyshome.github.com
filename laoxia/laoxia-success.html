@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/laoxia.css"/>
+	<script type="text/javascript">
+		/*根据clientWidth自动调整html结点的font-size*/
+		var cssEl=document.createElement('style');
+		document.documentElement.firstElementChild.appendChild(cssEl);
+		function setPxPerRem(){
+			var dpr=1;
+			var pxPerRem=document.documentElement.clientWidth*dpr/10;
+			cssEl.innerHTML='html{font-size:'+pxPerRem+'px !important}';
+		}
+		setPxPerRem();
+	</script>
+</head>
+<body>
+	<div class="main-bg">
+		<div class="tx-c title-list">
+		<img src="images/title_02.png" class="title-02"/>
+		</div>
+		<div class="tx-c welldone">大侠手法不错，捞到一只大龙虾</div>
+		<div class="laoxia">
+			<div class="animate-box">
+				<img src="images/net.png" class="net"/>
+				<img src="images/xia.png" class="xia"/>
+			</div>
+		</div>
+		<div class="laoxia-success">
+			<div class="prize">
+				<div class="expiry-date">有效时间:30天</div>
+				<div class="prize-detail">增加预期收益率3%</div>
+				<div class="sc-text canbeuse">投资满1000元可用</div>
+			</div>
+			<p class="tx-c">3%加息券已放入您的账户</p>
+			<p class="tx-c">快去使用吧！</p>
+			<div class="btn-success-group tx-c">
+				<button class="useAtOnce">马上使用</button>
+				<button class="onceAgain">再捞一发</button>
+			</div>
+		</div>
+		<div class="mask"></div>
+		<!--<div class="bg-xia-group">
+			<img src="images/xia3.png" class="bg-xia xia-1 move-right"/>
+			<img src="images/xia2.png" class="bg-xia xia-2 move-left"/>
+			<img src="images/xia3.png" class="bg-xia xia-3 move-right"/>
+			<img src="images/xia2.png" class="bg-xia xia-4 move-left"/>
+			<img src="images/xia2.png" class="bg-xia xia-5 move-left"/>
+		</div>-->
+		<div class="tx-c mar-t"><span class="restChances">您今日还有2次机会</span></div>
+		<div class="tx-c sc-text shareToFriends">分享给好友更能多一次捞虾机会</div>
+		<div class="lotteryList lottery-success">
+			<ul>
+				<li class="tx-c">恭喜<span class="teleNum">139****6543</span>捞到5元抵扣券</li>
+			</ul>
+		</div>
+		<div class="btn-group tx-c">
+			<button class="surprise">点我有惊喜</button>
+			<button class="btn-share">分享好友多捞一次</button>
+		</div>
+		<!--
+        	描述：分享弹出框
+        -->
+		<div class="mui-popup mui-popup-in shareTo" style="display:none;">
+		<div class="mui-popup-inner">
+			<div class="share-title">分享到</div>
+			<div class="txt-1">分享给微信好友或朋友圈，多一次捞虾机会</div>
+			<div class="uof share">
+				<div class="fl shareItem">
+					<img src="images/wechat 1.png"/>
+					<div class="icon-text">微信好友</div>
+				</div>
+				<div class="fr shareItem">
+					<img src="images/wechat 2.png"/>
+					<div class="icon-text">微信朋友圈</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--弹出层：连续5天捞虾 Begin-->
+	<div class="mui-popup mui-popup-in catchFiveDays" style="display: none;">
+		<div class="mui-popup-inner">
+			<div class="share-title">美洲大龙虾来啦！</div>
+			<div class="txt-2">连续五天来捞虾，可获得捞美洲大龙虾机会一次大龙虾最高返现99元！！</div>
+			<ul class="fiveDays">
+				<li>
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-20</div>
+					<div>已捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-21</div>
+					<div>未捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-22</div>
+					<div>未捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-23</div>
+					<div>未捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia01.png" class="l-xia"/>
+					<div>6-24</div>
+					<div>未捞虾</div>
+				</li>
+			</ul>
+			<div class="txt-1">再连续捞虾4天，就可以捞大龙虾啦！</div>
+			<div>
+				<button type="button" class="mui-btn mui-btn-warning go-on">好的，继续捞</button>
+			</div>
+		</div>
+	</div>
+	<!--连续5天捞虾 End-->
+	<!--遮罩层-->
+	<div class="mui-popup-backdrop mui-active" style="display: none;"></div>
+	</div>
+	<script src="js/mui.min.js"></script>	
+	<script src="js/jquery.js"></script>
+	<script src="js/velocity.js"></script>
+	<script>
+		$(function(){
+			$(".main-bg").height($(window).width()*(1206/750));
+		
+		$(".onceAgain").on("tap",function(){
+			window.location.href="laoxia.html";
+		})
+		/*点击分享*/
+      	$(".btn-share").on("tap",function(){
+      		$(".mui-popup-backdrop,.shareTo").show();
+      	})
+      	/*点击惊喜*/
+      	$(".surprise").on("tap",function(){
+      		$(".mui-popup-backdrop,.catchFiveDays").show();
+      	})
+      	/*点击遮罩层关闭弹窗*/
+      	$(".mui-popup-backdrop").on("tap",function(){
+      		$(".mui-popup-backdrop,.shareTo,.catchFiveDays").hide();
+      	})
+      	$(".go-on").on("tap",function(){
+      		$(".mui-popup-backdrop,.catchFiveDays").hide();
+      	})
+    })  	
+	</script>
+</body>
+</html>

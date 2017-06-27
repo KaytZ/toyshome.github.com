@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    	<title></title>
+    	<link href="css/mui.min.css" rel="stylesheet"/>
+    	<link rel="stylesheet" type="text/css" href="css/laoxia.css"/>
+		<script type="text/javascript">
+		/*根据clientWidth自动调整html结点的font-size*/
+		var cssEl=document.createElement('style');
+		document.documentElement.firstElementChild.appendChild(cssEl);
+		function setPxPerRem(){
+			var dpr=1;
+			var pxPerRem=document.documentElement.clientWidth*dpr/10;
+			cssEl.innerHTML='html{font-size:'+pxPerRem+'px !important}';
+		}
+		setPxPerRem();
+	</script>
+	</head>
+	<body>
+		<div class="tx-c  catchFiveDays" style="display:block;">
+		<div class="">
+			<div class="share-title">美洲大龙虾来啦！</div>
+			<div class="txt-2">连续五天来捞虾，可获得捞美洲大龙虾机会一次大龙虾最高返现99元！！</div>
+			<ul class="fiveDays">
+				<li>
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-20</div>
+					<div>已捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-21</div>
+					<div>未捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-22</div>
+					<div>未捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia02.png" class="s-xia"/>
+					<div>6-23</div>
+					<div>未捞虾</div>
+				</li>
+				<li class="sc-color">
+					<img src="images/xia01.png" class="l-xia"/>
+					<div>6-24</div>
+					<div>未捞虾</div>
+				</li>
+			</ul>
+			<div class="txt-1">再连续捞虾4天，就可以捞大龙虾啦！</div>
+			<div>
+				<button type="button" class="mui-btn mui-btn-warning go-on">好的，继续捞</button>
+			</div>
+		</div>
+	</div>
+	<!--连续5天捞虾 End-->
+	</body>
+</html>
