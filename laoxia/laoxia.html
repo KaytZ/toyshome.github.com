@@ -124,6 +124,7 @@
 	<script>
 		$(function(){
 			var chances=2; //抽奖次数 
+			var getPrize=false;
 			$(".chances").text(chances);
 			$(".main-bg").height($(window).width()*(1206/750));
 			$(".clickMe").on("tap",function(){
@@ -152,11 +153,14 @@
 			.velocity({translateX:"-1.5rem",translateY:"0.1rem"},{duration:500}).velocity({translateX:".1rem",translateY:"1.6rem"},{duration:1000})
 			.velocity({translateX:"-1.5rem",translateY:"0.1rem"},{duration:1000,
 				complete:function(){
+					var rand=Math.random()*10
 					//获取抽奖结果,判定大虾是否捞起，如果捞起则显示大虾图片
-					if(0<=Math.floor(Math.random()*10)<5){ //如果随机数在0~4则为失败
+					if(rand<5){ //如果随机数在0~4则为失败
 						$(".xia").css("opacity","0");
+						getPrize=false;
 					}
-					if(5<=Math.floor(Math.random()*10)<=9){
+					if(rand>=5){
+						getPrize=true;
 						$(".xia").css("opacity","1");//如果抽中了则龙虾显示
 					}
 				}
@@ -165,10 +169,11 @@
 				complete:function(){
 					//伪数据 抽奖结果
 					//抽中了则跳转中奖页面
-					if(0<=Math.floor(Math.random()*10)<5)
+					if(!getPrize)
 					{
 						laoxiaFail();//没抽到奖
 					}else{
+						alert(isReward)
 						laoxiaSuccess();//抽中了
 					}
 				}
