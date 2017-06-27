@@ -115,6 +115,9 @@
 		</div>
 	</div>
 	<!--连续5天捞虾 End-->
+	<div class="loadingMask tx-c">
+    	<img src="images/loading.png" class="loading2"/></div>
+    </div>
 	<!--遮罩层-->
 	<div class="mui-popup-backdrop mui-active" style="display: none;"></div>
 	</div>
@@ -122,6 +125,10 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/velocity.js"></script>
 	<script>
+		window.onload=function(){
+			$(".loadingMask").hide();
+		}
+	
 		$(function(){
 			var chances=2; //抽奖次数 
 			var getPrize=false;
@@ -155,7 +162,7 @@
 				complete:function(){
 					var rand=Math.random()*10
 					//获取抽奖结果,判定大虾是否捞起，如果捞起则显示大虾图片
-					if(rand<5){ //如果随机数在0~4则为失败
+					if(rand<5){ //如果随机数在0~5则为失败
 						$(".xia").css("opacity","0");
 						getPrize=false;
 					}

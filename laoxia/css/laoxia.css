@@ -35,6 +35,17 @@ h1{font-size:.4rem;font-weight: normal;}
 .mask{height:2rem;width:100%;position:absolute;z-index:-1;top:9rem;
 background-image: url("../images/bg.png");background-size:100%;background-repeat: no-repeat ;
 background-position-y: -9rem;}
+.loadingMask{position:fixed;z-index:99999;left:0;top:0;right:0;bottom:0;background:#34BAEC;}
+.loading2{ width:30px;margin-top:40%;-webkit-transform: translate(-50%);transform:translateX(-50%);-webkit-animation: load 2s linear infinite;animation: load 2s linear infinite;
+}
+@keyframes load{
+	from{transform: rotateZ(0);}
+	to{transform: rotateZ(360deg);}
+}
+@-webkit-keyframes load{
+	from{-webkit-transform: rotateZ(0);}
+	to{-webkit-transform: rotateZ(360deg);}
+}
 .teleNum{color:#e4393c;}
 .lotteryList{margin-top:2rem;font-size:.4rem;}
 .laoxia-rule{color:#f89017;text-decoration: underline;font-size: .4rem;margin-top:.2rem}

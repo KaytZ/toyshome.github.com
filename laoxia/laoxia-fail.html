@@ -112,6 +112,9 @@
 		</div>
 	</div>
 	<!--连续5天捞虾 End-->
+	<div class="loadingMask tx-c">
+    	<img src="images/loading.png" class="loading2"/></div>
+    </div>
 	<!--遮罩层-->
 	<div class="mui-popup-backdrop mui-active" style="display: none;"></div>
 	</div>
@@ -119,6 +122,10 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/velocity.js"></script>
 	<script>
+		window.onload=function(){
+			$(".loadingMask").hide();
+		}
+	
 		$(function(){
 			$(".main-bg").height($(window).width()*(1206/750));
 			$(".clickMe").on("tap",function(){
