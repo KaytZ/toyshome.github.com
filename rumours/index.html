@@ -28,7 +28,13 @@
 	<div style="margin-top:5rem;color:#fff;">强迫症请勿参与，本作战耗时8分钟左右</div>
 	<button class="btn-begin">开始作战</button>
 	<p class="ac mart" style="color:#47D2EC">好7喵&好奇实验室出品</p>
+	<div class="loadingMask">
+    	<div class="ac">Loading...<img src="img/loading.png" class="loading2"/></div>
+    </div>
 	<script type="text/javascript">
+		window.onload=function(){
+			document.querySelector(".loadingMask").style.display="none";
+		}
 		document.getElementsByClassName("btn-begin")[0].onclick=function(){
 			window.location.href="questions.html";
 		}
