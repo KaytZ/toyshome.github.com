@@ -134,6 +134,7 @@ input, select {
 #pageHome{
 	background:url(../img/bg.jpg) no-repeat ;
 	background-size:cover;
+	position:relative;
 }
 .title{
 	font-weight:bold;
@@ -149,6 +150,19 @@ input, select {
 	height: 50px;
 	line-height: 52px;
 	margin: 0 auto 20px;
+}
+.loading-mask{
+	position:fixed;
+	top:0;left:0;right:0;bottom:0;
+	background:#C1D4D2;
+	z-index:10;
+}
+.loading-txt{
+	text-align: center;
+	font-size: 30px;
+	margin-top:200px;
+	color:#666666;
+	font-weight:bold;
 }
 /*choosemission*/
 .title1{
@@ -191,4 +205,11 @@ input, select {
 	width: 60px;
 	height:30px;
 	font-size: 16px;
+}
+.btn-help{
+	margin-right:10px;
+}
+#mission{
+	box-sizing: border-box;
+	padding:20px;
 }

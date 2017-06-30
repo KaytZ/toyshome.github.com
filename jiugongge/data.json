@@ -3,7 +3,8 @@
 	"unlockedCount":3,
 	"subjects":[
 		{
-			"words":"床前明月光轻柳云"
+			"words":"床前明月光轻柳云",
+			"answer":"窗前明月光"
 		}
 	]
 }
