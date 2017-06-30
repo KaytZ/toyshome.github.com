@@ -140,6 +140,7 @@
 			//点击答案
 			$(".answer").on("click",".answer-words",function(){
 				var _thisText=$(this).text();
+				$(".answer-words").removeClass("wrong correct")
 				var ref_index=$(this).attr("word-index");
 				console.log(_thisText+";"+ref_index)
 				$(this).text("");
