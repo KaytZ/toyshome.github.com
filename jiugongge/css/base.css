@@ -235,7 +235,7 @@ input, select {
 	display: -webkit-flex;
 	align-items: center;
 	justify-content: center;
-	box-sizing: border;
+	box-sizing: border-box;
 	border:1px solid #333;
 	position:absolute;
 	width: 85%;height:85%;

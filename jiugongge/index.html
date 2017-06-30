@@ -49,11 +49,11 @@
 				<div class="words-block"><span></span></div>
 			</div>
 			<div class="answer">
-				<div class="answer-words">1</div>
-				<div class="answer-words">1</div>
-				<div class="answer-words">1</div>
-				<div class="answer-words">1</div>
-				<div class="answer-words">1</div>
+				<div class="answer-words"></div>
+				<div class="answer-words"></div>
+				<div class="answer-words"></div>
+				<div class="answer-words"></div>
+				<div class="answer-words"></div>
 			</div>
 		</div>
 		
@@ -63,7 +63,7 @@
 			window.onload=function(){
 				$(".loading-mask").hide();
 			}
-			var data;
+			var data;//模拟的json数据
 			$.ajax({
 				type:"get",
 				url:"data.json",
@@ -85,6 +85,7 @@
 					$(".tip").hide();
 				},1000)
 			}
+			//生成关卡数
 			for(var i=1;i<=missionCount;i++){
 				if(i<=unlockedCount){
 					missionBlocks+='<div class="mission active" onclick="chooseMission(this)"><a href="#mission">'+i+'</a></div>';	
@@ -101,6 +102,28 @@
 				}
 			}
 			
+			//随机打乱九个字
+			var subject=data.subjects[0].words;
+			var randWords=[].slice.call(subject).sort(function(){
+				return Math.random()<0.5
+			});
+			$(".words-block").each(function(index,item){
+				$(this).find("span").text(randWords[index]).attr("word-index",index);
+			})
+			
+			//点击九宫格
+			var chooseTag=0;//已经选择的字数
+			var answerLen=data.subjects[0].answer.length; //答案长度
+			$(".words").on("click",".words-block",function(){
+				if(chooseTag<answerLen){
+					var _thisText=$(this).text();
+					$(this).html("");
+					$(".answer-words").eq(chooseTag).text(_thisText);
+					chooseTag++;
+				}else{
+					alert(1)
+				}
+			})
 		</script>
 	</body>
 </html>
