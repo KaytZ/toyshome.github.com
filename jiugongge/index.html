@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>诗词九宫格</title>
+		<script src="js/mobilebone.js"></script>
+		<script src="js/jquery.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/mobilebone.css"/>
+		<link rel="stylesheet" href="css/base.css" />
+	</head>
+	<body>
+		<div id="pageHome" class="page out hide">
+			<div class="title tx-c">诗词九宫格</div>
+			<a class="btn btn-begin" href="#choose-mission">开始</a>
+			<a class="btn btn-begin">更多</a>
+			<div class="tx-c">好七喵书院出品</div>
+		</div>
+		
+		<div id="choose-mission" class="page out">
+			<div class="title1">选择关卡</div>
+			<div class="mission-blocks"></div>
+		</div>
+		
+		<div id="mission" class="page out">
+			
+		</div>
+		
+		<div class="alert hide"></div>
+		
+		<script>
+			var data;
+			$.ajax({
+				type:"get",
+				url:"data.json",
+				async:false,
+				success:function(json){
+					data=json;
+				}
+			});
+			var missionCount=data.missionCount;//假设有50关
+			var unlockedCount=data.unlockedCount;//假设解锁了3关
+			var missionBlocks='';
+			
+			window.alert=function(str){
+				$(".alert").text(str).show();
+				setTimeout(function(){
+					$(".alert").hide();
+				},3000)
+			}
+			for(var i=1;i<=missionCount;i++){
+				if(i<=unlockedCount){
+					missionBlocks+='<div class="mission active" onclick="chooseMission(this)"><a href="#mission">'+i+'</a></div>';	
+				}else{
+					missionBlocks+='<div class="mission" onclick="chooseMission(this)"><span>'+i+'</span></div>';
+				}
+			}
+			$(".mission-blocks").html(missionBlocks);
+			
+			function chooseMission(obj){
+				if(!$(obj).hasClass("active")){
+					alert("关卡未解锁，请完成前面关卡来解锁")
+				}
+			}
+			
+		</script>
+	</body>
+</html>
