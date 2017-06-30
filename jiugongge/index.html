@@ -20,16 +20,40 @@
 			<a class="btn btn-begin">更多</a>
 			<div class="tx-c">好七喵书院出品</div>
 		</div>
-		
+		<!--
+        	时间：2017-06-30
+        	描述：选关卡
+        -->
 		<div id="choose-mission" class="page out">
 			<div class="title1">选择关卡</div>
 			<div class="mission-blocks"></div>
 		</div>
-		
+		<!--
+			时间：2017-06-30
+        	描述：答题页
+        -->
 		<div id="mission" class="page out">
 			<div class="tx-r">
 				<button class="btn btn-help">求助</button>
 				<button class="btn btn-question">?</button>
+			</div>
+			<div class="words">
+				<div class="words-block"><span></span></div>
+				<div class="words-block"><span></span></div>
+				<div class="words-block"><span></span></div>
+				<div class="words-block"><span></span></div>
+				<div class="words-block"><span></span></div>
+				<div class="words-block"><span></span></div>
+				<div class="words-block"><span></span></div>
+				<div class="words-block"><span></span></div>
+				<div class="words-block"><span></span></div>
+			</div>
+			<div class="answer">
+				<div class="answer-words">1</div>
+				<div class="answer-words">1</div>
+				<div class="answer-words">1</div>
+				<div class="answer-words">1</div>
+				<div class="answer-words">1</div>
 			</div>
 		</div>
 		
@@ -51,6 +75,7 @@
 			var missionCount=data.missionCount;//假设有50关
 			var unlockedCount=data.unlockedCount;//假设解锁了3关
 			var missionBlocks='';
+			const GRID_COUNT=9;//9宫格9个格子
 			
 			var timer=null;
 			window.tip=function(str){
