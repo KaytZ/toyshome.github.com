@@ -180,7 +180,11 @@
 			})
 			//下一题
 			function nextMisson(){
-				
+				$(".mission").eq(unlockedCount).addClass("active");
+				var nextObj=$(".mission.active").eq(unlockedCount);
+				chooseMission(nextObj);
+				unlockedCount+=1;
+				tip("这是第"+unlockedCount+"关");
 			}
 		</script>
 	</body>
