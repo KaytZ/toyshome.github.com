@@ -48,13 +48,11 @@
 				<div class="words-block"><span></span></div>
 				<div class="words-block"><span></span></div>
 			</div>
-			<div class="answer">
-				<!--<div class="answer-words empty"></div>
-				<div class="answer-words empty"></div>
-				<div class="answer-words empty"></div>
-				<div class="answer-words empty"></div>
-				<div class="answer-words empty"></div>-->
-			</div>
+			<!--
+            	时间：2017-06-30
+            	描述：答题区域
+            -->
+			<div class="answer"></div>
 		</div>
 		
 		<div class="tip hide"></div>
@@ -108,18 +106,16 @@
 				},1000)
 			}
 			
-			//选择关卡
-			function chooseMission(obj){
-				if(!$(obj).hasClass("active")){
-					tip("关卡未解锁，请完成前面关卡来解锁")
-				}
-			}
+			var answerWords='';//答案内容
 			var answerLen; //答案长度
-			var answerHTML='';
+			var chooseCount=0;//选择的字数
+			var userSelect='';//选择的文本内容
 			//生成题目
-			function showMission(content){
+			function showMission(content,mid){
 				//生成答案格
-				answerLen=data.subjects[0].answer.length;
+				answerWords=data.subjects[mid].answer;
+				answerLen=answerWords.length;
+				var answerHTML='';
 				for(var k=0;k<answerLen;k++){
 					answerHTML+='<div class="answer-words empty"></div>';
 				}
@@ -132,13 +128,21 @@
 					$(this).find("span").text(randWords[index]);
 				})
 			}
-			
-			var subject=data.subjects[0].words;
-			showMission(subject);
+			//选择关卡
+			function chooseMission(obj){
+				if(!$(obj).hasClass("active")){
+					tip("关卡未解锁，请完成前面关卡来解锁")
+				}else{
+					var missionId=$(obj).attr("missionid");
+					var content=data.subjects[missionId].words;
+					showMission(content,missionId);
+					chooseCount=0;
+					userSelect='';
+					$(".words-block>span").removeClass("empty");
+				}
+			}
 			
 			//点击九宫格
-			var chooseCount=0;//已经选择的字数
-			var userSelect='';//用户的选择
 			$(".words").on("click",".words-block",function(){
 				if(chooseCount<answerLen&&!$(this).find("span").hasClass("empty")){
 					var _thisText=$(this).find("span").text();
@@ -148,19 +152,18 @@
 					chooseCount++;
 				}
 				if(chooseCount==answerLen){
-					userSelect='';
 					$(".answer-words").each(function(index,item){
 						userSelect+=$(this).text();
 					})
 					console.log(userSelect)
-					if(userSelect==data.subjects[0].answer){
+					if(userSelect==answerWords){
 						$(".answer-words").addClass("correct")
 						tip("答对了");
 					}else{
 						$(".answer-words").addClass("wrong");
 						tip("答错了")
 					}
-
+					userSelect='';
 				}
 			})
 			//点击答案
