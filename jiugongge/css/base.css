@@ -107,17 +107,21 @@ input, select {
 .tx-c{
 	text-align: center;
 }
+.tx-r{
+	text-align: right;
+}
 .btn{background-color:#89c997;border:1px solid #666;border-radius: 4px;text-align: center;}
 .hide{
 	display: none;
 }
-/*mask*/
-.alert{
+/*pop*/
+.tip{
 	position:fixed;
 	top:50%;left:50%;
 	-webkit-transform:translate(-50%,-50%);
 	transform:translate(-50%,-50%);
-	padding:20px;
+	padding:20px 10px;
+	line-height:1.2;
 	text-align: center;
 	color:#fff;
 	min-width:60%;
@@ -181,4 +185,10 @@ input, select {
 	opacity: 1;
 	background-color: #89C997;
 	border-color:#666;
+}
+/*mission*/
+.btn-help,.btn-question{
+	width: 60px;
+	height:30px;
+	font-size: 16px;
 }

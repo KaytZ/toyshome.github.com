@@ -1,4 +1,9 @@
 {
 	"missionCount":50,
-	"unlockedCount":3
+	"unlockedCount":3,
+	"subjects":[
+		{
+			"words":"床前明月光轻柳云"
+		}
+	]
 }

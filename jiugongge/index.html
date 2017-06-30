@@ -23,10 +23,13 @@
 		</div>
 		
 		<div id="mission" class="page out">
-			
+			<div class="tx-r">
+				<button class="btn btn-help">求助</button>
+				<button class="btn btn-question">？</button>
+			</div>
 		</div>
 		
-		<div class="alert hide"></div>
+		<div class="tip hide"></div>
 		
 		<script>
 			var data;
@@ -42,11 +45,13 @@
 			var unlockedCount=data.unlockedCount;//假设解锁了3关
 			var missionBlocks='';
 			
-			window.alert=function(str){
-				$(".alert").text(str).show();
-				setTimeout(function(){
-					$(".alert").hide();
-				},3000)
+			var timer=null;
+			window.tip=function(str){
+				$(".tip").text(str).show();
+				clearTimeout(timer)
+				timer=setTimeout(function(){
+					$(".tip").hide();
+				},1000)
 			}
 			for(var i=1;i<=missionCount;i++){
 				if(i<=unlockedCount){
@@ -57,9 +62,10 @@
 			}
 			$(".mission-blocks").html(missionBlocks);
 			
+			//选择关卡
 			function chooseMission(obj){
 				if(!$(obj).hasClass("active")){
-					alert("关卡未解锁，请完成前面关卡来解锁")
+					tip("关卡未解锁，请完成前面关卡来解锁")
 				}
 			}
 			
