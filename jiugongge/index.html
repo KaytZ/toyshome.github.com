@@ -49,11 +49,11 @@
 				<div class="words-block"><span></span></div>
 			</div>
 			<div class="answer">
-				<div class="answer-words"></div>
-				<div class="answer-words"></div>
-				<div class="answer-words"></div>
-				<div class="answer-words"></div>
-				<div class="answer-words"></div>
+				<div class="answer-words empty"></div>
+				<div class="answer-words empty"></div>
+				<div class="answer-words empty"></div>
+				<div class="answer-words empty"></div>
+				<div class="answer-words empty"></div>
 			</div>
 		</div>
 		
@@ -116,11 +116,11 @@
 			var userSelect='';//用户的选择
 			var answerLen=data.subjects[0].answer.length; //答案长度
 			$(".words").on("click",".words-block",function(){
-				if(chooseCount<answerLen){
+				if(chooseCount<answerLen&&!$(this).find("span").hasClass("empty")){
 					var _thisText=$(this).find("span").text();
 					var index=$(this).index();
-					$(this).find("span").text("");
-					$(".answer-words").eq(chooseCount).text(_thisText).attr("word-index",index);
+					$(this).find("span").text("").addClass("empty");
+					$(".answer-words.empty").eq(0).text(_thisText).attr("word-index",index).removeClass("empty");
 					chooseCount++;
 				}
 				if(chooseCount==answerLen){
@@ -139,12 +139,12 @@
 			})
 			//点击答案
 			$(".answer").on("click",".answer-words",function(){
-				if(chooseCount>0){
+				if(chooseCount>0&&!$(this).hasClass("empty")){
 					var _thisText=$(this).text();
 					$(".answer-words").removeClass("wrong correct")
 					var ref_index=$(this).attr("word-index");
-					$(this).text("");
-					$(".words-block").eq(ref_index).find("span").text(_thisText);
+					$(this).text("").addClass("empty");
+					$(".words-block").eq(ref_index).find("span").text(_thisText).removeClass("empty");
 					chooseCount--;
 				}
 			})
