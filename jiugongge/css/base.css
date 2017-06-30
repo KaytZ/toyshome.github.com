@@ -260,3 +260,9 @@ input, select {
 	border:1px solid #333333;
 	background:#FDD87F;
 }
+.answer-words.correct{
+	border:2px solid #16a085;
+}
+.answer-words.wrong{
+	border:2px solid #e4393c;
+}

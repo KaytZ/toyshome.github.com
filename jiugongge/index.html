@@ -108,21 +108,43 @@
 				return Math.random()<0.5
 			});
 			$(".words-block").each(function(index,item){
-				$(this).find("span").text(randWords[index]).attr("word-index",index);
+				$(this).find("span").text(randWords[index]);
 			})
 			
 			//点击九宫格
-			var chooseTag=0;//已经选择的字数
+			var chooseCount=0;//已经选择的字数
+			var userSelect='';//用户的选择
 			var answerLen=data.subjects[0].answer.length; //答案长度
 			$(".words").on("click",".words-block",function(){
-				if(chooseTag<answerLen){
-					var _thisText=$(this).text();
-					$(this).html("");
-					$(".answer-words").eq(chooseTag).text(_thisText);
-					chooseTag++;
-				}else{
-					alert(1)
+				if(chooseCount<answerLen){
+					var _thisText=$(this).find("span").text();
+					var index=$(this).index();
+					$(this).find("span").text("");
+					$(".answer-words").eq(chooseCount).text(_thisText).attr("word-index",index);
+					chooseCount++;
 				}
+				if(chooseCount==answerLen){
+					$(".answer-words").each(function(index,item){
+						userSelect+=$(this).text();
+					})
+					if(userSelect==data.subjects[0].answer){
+						$(".answer-words").addClass("correct")
+						tip("答对了");
+					}else{
+						$(".answer-words").addClass("wrong");
+						tip("答错了")
+					}
+
+				}
+			})
+			//点击答案
+			$(".answer").on("click",".answer-words",function(){
+				var _thisText=$(this).text();
+				var ref_index=$(this).attr("word-index");
+				console.log(_thisText+";"+ref_index)
+				$(this).text("");
+				$(".words-block").eq(ref_index).find("span").text(_thisText);
+				chooseCount--;
 			})
 		</script>
 	</body>
