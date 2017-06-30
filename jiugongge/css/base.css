@@ -261,8 +261,8 @@ input, select {
 	background:#FDD87F;
 }
 .answer-words.correct{
-	border:2px solid #16a085;
+	background:#16a085;
 }
 .answer-words.wrong{
-	border:2px solid #e4393c;
+	background:#e4393c;
 }
