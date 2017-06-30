@@ -26,6 +26,8 @@ html{
 body {
     line-height:1;
     overflow-y:auto !important;
+    background:url(../img/bg.jpg) no-repeat ;
+	background-size:cover;
 }
 
 :focus {
@@ -132,8 +134,7 @@ input, select {
 
 /*homepage*/
 #pageHome{
-	background:url(../img/bg.jpg) no-repeat ;
-	background-size:cover;
+	
 	position:relative;
 }
 .title{
