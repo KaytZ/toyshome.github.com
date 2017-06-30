@@ -184,7 +184,11 @@
 				var nextObj=$(".mission.active").eq(unlockedCount);
 				chooseMission(nextObj);
 				unlockedCount+=1;
-				tip("这是第"+unlockedCount+"关");
+				if(unlockedCount>missionCount){
+					tip("这已经是最后一关了")
+				}else{
+					tip("这是第"+unlockedCount+"关");
+				}
 			}
 		</script>
 	</body>
