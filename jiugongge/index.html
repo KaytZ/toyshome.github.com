@@ -88,7 +88,7 @@
 			//生成关卡数
 			for(var i=1;i<=missionCount;i++){
 				if(i<=unlockedCount){
-					missionBlocks+='<div class="mission active" onclick="chooseMission(this)"><a href="#mission">'+i+'</a></div>';	
+					missionBlocks+='<div class="mission active" onclick="chooseMission(this)"><a href="#mission" data-reload>'+i+'</a></div>';	
 				}else{
 					missionBlocks+='<div class="mission" onclick="chooseMission(this)"><span>'+i+'</span></div>';
 				}
@@ -127,7 +127,7 @@
 					$(".answer-words").each(function(index,item){
 						userSelect+=$(this).text();
 					})
-					if(userSelect==data.subjects[0].answer){
+					if(userSelect.trim()==data.subjects[0].answer){
 						$(".answer-words").addClass("correct")
 						tip("答对了");
 					}else{
