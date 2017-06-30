@@ -34,7 +34,7 @@
         -->
 		<div id="mission" class="page out">
 			<div class="tx-r">
-				<button class="btn btn-help">求助</button>
+				<button class="btn btn-help" onclick="nextMisson()">求助</button>
 				<button class="btn btn-question">?</button>
 			</div>
 			<div class="words">
@@ -180,7 +180,7 @@
 			})
 			//下一题
 			function nextMisson(){
-				$(".mission").eq(unlockedCount).addClass("active");
+				$(".mission").eq(unlockedCount).addClass("active").html("<a href='#mission'>"+(unlockedCount+1)+"</a>");
 				var nextObj=$(".mission.active").eq(unlockedCount);
 				chooseMission(nextObj);
 				unlockedCount+=1;
