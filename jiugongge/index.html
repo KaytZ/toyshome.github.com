@@ -72,11 +72,33 @@
 					data=json;
 				}
 			});
-			var missionCount=data.missionCount;//假设有50关
-			var unlockedCount=data.unlockedCount;//假设解锁了3关
+			var missionCount=data.missionCount;//关卡数
+			var unlockedCount=data.unlockedCount;//解锁的关卡数
 			var missionBlocks='';
+			var missionArr=[];//存放题目id的数组
 			const GRID_COUNT=9;//9宫格9个格子
+			//随机打乱题目序号
+			for(var n=0;n<missionCount;n++){
+				missionArr.push(n);
+				//打乱后的题目序号数组
+				var sortedMission=missionArr.sort(function(){
+					return Math.random()<0.5;
+				})
+			}
+			//生成关卡数
+			for(var i=1;i<=missionCount;i++){
+				if(i<=unlockedCount){
+					missionBlocks+='<div class="mission active" onclick="chooseMission(this)"><a href="#mission">'+i+'</a></div>';	
+				}else{
+					missionBlocks+='<div class="mission" onclick="chooseMission(this)"><span>'+i+'</span></div>';
+				}
+			}
+			$(".mission-blocks").html(missionBlocks)
+			$(".mission").each(function(index,item){
+				$(this).attr("missionid",sortedMission[index]);
+			});
 			
+			//半透明提示框
 			var timer=null;
 			window.tip=function(str){
 				$(".tip").text(str).show();
@@ -85,15 +107,6 @@
 					$(".tip").hide();
 				},1000)
 			}
-			//生成关卡数
-			for(var i=1;i<=missionCount;i++){
-				if(i<=unlockedCount){
-					missionBlocks+='<div class="mission active" onclick="chooseMission(this)"><a href="#mission" onclick="createAnswer()">'+i+'</a></div>';	
-				}else{
-					missionBlocks+='<div class="mission" onclick="chooseMission(this)"><span>'+i+'</span></div>';
-				}
-			}
-			$(".mission-blocks").html(missionBlocks);
 			
 			//选择关卡
 			function chooseMission(obj){
@@ -101,23 +114,27 @@
 					tip("关卡未解锁，请完成前面关卡来解锁")
 				}
 			}
-			var answerLen=data.subjects[0].answer.length; //答案长度
+			var answerLen; //答案长度
 			var answerHTML='';
-			function createAnswer(){
+			//生成题目
+			function showMission(content){
+				//生成答案格
+				answerLen=data.subjects[0].answer.length;
 				for(var k=0;k<answerLen;k++){
 					answerHTML+='<div class="answer-words empty"></div>';
 				}
 				$(".answer").html(answerHTML);
+				//随机打乱九个字填充九宫格
+				var randWords=[].slice.call(content).sort(function(){
+					return Math.random()<0.5
+				});
+				$(".words-block").each(function(index,item){
+					$(this).find("span").text(randWords[index]);
+				})
 			}
 			
-			//随机打乱九个字
 			var subject=data.subjects[0].words;
-			var randWords=[].slice.call(subject).sort(function(){
-				return Math.random()<0.5
-			});
-			$(".words-block").each(function(index,item){
-				$(this).find("span").text(randWords[index]);
-			})
+			showMission(subject);
 			
 			//点击九宫格
 			var chooseCount=0;//已经选择的字数
@@ -158,6 +175,10 @@
 					userSelect='';
 				}
 			})
+			//下一题
+			function nextMisson(){
+				
+			}
 		</script>
 	</body>
 </html>
