@@ -34,7 +34,7 @@
         -->
 		<div id="mission" class="page out">
 			<div class="tx-r">
-				<button class="btn btn-help" onclick="nextMisson()">求助</button>
+				<button class="btn btn-help" onclick="help()">帮助</button>
 			</div>
 			<div class="words">
 				<div class="words-block"><span></span></div>
@@ -54,6 +54,11 @@
 			<div class="answer"></div>
 		</div>
 		<div class="tip hide"></div>
+		<div class="help tx-c" data-pop>
+			<img src="img/QRCode.png" class="qr"/>
+			<div>长按扫码查看通关秘籍哦！</div>
+		</div>
+		<div class="mask"></div>
 	</div>
 		<script src="js/jquery-1.11.1.min.js"></script>
 		<script>
@@ -176,6 +181,15 @@
 					chooseCount--;
 					userSelect='';
 				}
+			})
+			//点击帮助
+			function help(){
+				$(".mask").show();
+				$(".help").show();
+			}
+			$(".mask").on("click",function(){
+				$(this).hide();
+				$("[data-pop]").hide();
 			})
 			//下一题
 			function nextMisson(){

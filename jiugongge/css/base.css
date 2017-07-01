@@ -288,8 +288,25 @@ input, select {
 	background:#FDD87F;
 }
 .answer-words.correct{
-	background:#16a085;
+	border-color: transparent;
+	color:#2DC65A;
+	box-shadow:0 0 0 1px #2DC65A;
 }
 .answer-words.wrong{
-	background:#e4393c;
+	border-color: transparent;
+	color:#e4393c;
+	box-shadow:0 0 0 1px #e4393c;
+}
+.qr{width: 200px;height: 200px;}
+.mask{background-color:rgba(0,0,0,.2);display: none;}
+.help{
+	display: none;
+	position:fixed;
+	z-index:10;
+	padding:10px;
+	background: #fff;
+	border:1px solid #333;
+	left:50%;top:50%;
+	transform: translate(-50%,-50%);
+	-webkit-transform: translate(-50%,-50%);
 }
