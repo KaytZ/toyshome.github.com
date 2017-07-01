@@ -54,10 +54,23 @@
 			<div class="answer"></div>
 		</div>
 		<div class="tip hide"></div>
+		<!--
+        	时间：2017-07-01
+        	描述：帮助弹窗
+        -->
 		<div class="help tx-c" data-pop>
 			<img src="img/QRCode.png" class="qr"/>
 			<div>长按扫码查看通关秘籍哦！</div>
 		</div>
+		<!--
+        	时间：2017-07-01
+        	描述：答对弹窗
+        -->
+        <div class="correct-pop" data-pop>
+			<div class="correct-content">
+				<button class="btn" style="font-size: 20px;" onclick="nextMisson()">下一关测试按钮</button>
+			</div>
+        </div>
 		<div class="mask"></div>
 	</div>
 		<script src="js/jquery-1.11.1.min.js"></script>
@@ -162,7 +175,9 @@
 					console.log(userSelect)
 					if(userSelect==answerWords){
 						$(".answer-words").addClass("correct")
-						tip("答对了");
+//						tip("答对了");
+						$(".correct-pop").show();
+						$(".mask").show();
 					}else{
 						$(".answer-words").addClass("wrong");
 						tip("答错了")
@@ -197,6 +212,8 @@
 				var nextObj=$(".mission.active").eq(unlockedCount);
 				chooseMission(nextObj);
 				unlockedCount+=1;
+				$(".correct-pop").hide();
+				$(".mask").hide();
 				if(unlockedCount>missionCount){
 					tip("这已经是最后一关了")
 				}else{
