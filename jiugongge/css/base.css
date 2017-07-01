@@ -26,6 +26,7 @@ html{
 body {
     line-height:1;
     overflow-y:auto !important;
+    position: relative;
 }
 
 :focus {
@@ -59,6 +60,7 @@ a {
     text-decoration: none;
     vertical-align:baseline;
     background:transparent;
+    color:#333;
 }
 a:link{
 	color:#333;
@@ -169,7 +171,7 @@ input, select {
 	margin-top: 100px;
 	margin-bottom: 100px;
 }
-.btn-begin,.btn-more,.btn-choose{
+.btn-begin,.btn-more,.btn-choose,.btn-picker{
 	display: block;
 	font-size:20px;
 	width: 130px;
@@ -192,6 +194,12 @@ input, select {
 }
 .main-logo{
 	width:271px;margin-top:80px;margin-bottom:80px;
+}
+.ensure a{
+	display: block;
+	width:100%;
+	height:100%;
+	color:#007AFF;
 }
 /*choosemission*/
 .title1{
@@ -329,7 +337,7 @@ input, select {
 	background-size: cover;
 }
 .correct-content{
-	margin-top:80px;
+	margin-top:70px;
 }
 .correct-content>div{
 	font-size:18px;
