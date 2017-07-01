@@ -131,7 +131,14 @@ input, select {
 .tx-r{
 	text-align: right;
 }
-.btn{background-color:#89c997;border:1px solid #666;border-radius: 4px;text-align: center;}
+.btn{
+	background-color:#89c997;
+	border:1px solid #666;
+	border-radius:2px;
+	text-align: center;
+	display: inline-block;
+	font-weight: normal;
+}
 .hide{
 	display: none;
 }
@@ -323,4 +330,22 @@ input, select {
 }
 .correct-content{
 	margin-top:80px;
+}
+.correct-content>div{
+	font-size:18px;
+	font-weight: bold;
+}
+.answer-txt{
+	margin: 0 auto 20px;
+}
+.poem-info{
+	margin: 10px auto;
+}
+.btn-recite,.btn-first-see,.btn-seen{
+	padding: 8px 6px;
+	margin-right: 10px;
+	font-size:16px;
+}
+.btn-first-see{
+	margin-right: 0;
 }
