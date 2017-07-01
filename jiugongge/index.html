@@ -79,7 +79,7 @@
 				<div class="answer-txt">窗前明月光</div>
 				<div>【出自】</div>
 				<div class="poem-info">唐·李白 《静夜思》</div>
-				<button class="btn" style="font-size: 20px;" onclick="nextMisson()">下一关</button>
+				<button class="btn btn-next" style="font-size: 20px;">下一关</button>
 				<div style="font-size: 14px;font-weight: normal;margin-top: 10px;">你会背这首诗吗?</div>
 				<div class="tx-c" style="margin-top: 10px;">
 					<div class="btn btn-recite">我会背</div>
@@ -154,6 +154,7 @@
 			var answerLen; //答案长度
 			var chooseCount=0;//选择的字数
 			var userSelect='';//选择的文本内容
+			var currentid=0;//正要闯的关卡序号
 			//生成题目
 			function showMission(content,mid){
 				//生成答案格
@@ -185,7 +186,7 @@
 					$(".words-block>span").removeClass("empty");
 				}
 				if(!snum){
-					var currentid=$(obj).attr("currentid");
+					 currentid=$(obj).attr("currentid");
 					$(".missionNum").text("当前正在第"+currentid+"关")
 				}else{
 					$(".missionNum").text("当前正在第"+snum+"关")
@@ -205,7 +206,6 @@
 					$(".answer-words").each(function(index,item){
 						userSelect+=$(this).text();
 					})
-					console.log(userSelect)
 					if(userSelect==answerWords){
 						$(".answer-words").addClass("correct")
 						$(".correct-pop").show();
@@ -241,18 +241,20 @@
 			})
 			//下一题
 			function nextMisson(){
-				$(".mission").eq(unlockedCount).addClass("active").html("<a href='#mission'>"+(unlockedCount+1)+"</a>");
-				var nextObj=$(".mission.active").eq(unlockedCount);
+				$(".mission").eq(currentid).addClass("active").html("<a href='#mission'>"+(~~currentid+1)+"</a>");
+				var nextObj=$(".mission").eq(currentid);
 				chooseMission(nextObj);
-				unlockedCount+=1;
 				$(".correct-pop").hide();
 				$(".mask").hide();
-				if(unlockedCount>missionCount){
+				if(currentid>missionCount){
 					tip("这已经是最后一关了")
 				}else{
-					tip("这是第"+unlockedCount+"关");
+					tip("这是第"+currentid+"关");
 				}
 			}
+			$(".btn-next").on("click",function(){
+				nextMisson();
+			})
 		</script>
 		<script>
 			//选关，picker插件
@@ -282,9 +284,9 @@
     			},
     			callback:function(indexArr, data){
     				$("#picker").text("选关");
-    				var missionIndex=~~(data.join(""));
-    				if(missionIndex<=unlockedCount){
-  						chooseMission($(".mission").eq(missionIndex-1),missionIndex);
+    				currentid=~~(data.join(""));
+    				if(currentid<=unlockedCount){
+  						chooseMission($(".mission").eq(currentid-1),currentid);
   					}else{
   						alert("您选的关卡还未解锁");
   					}
