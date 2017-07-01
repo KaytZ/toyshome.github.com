@@ -8,6 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="css/mobilebone.css"/>
 		<link rel="stylesheet" href="css/base.css"/>
 		<link rel="stylesheet" href="css/mobileSelect.css" />
+		<!--<script async="" src="//www.google-analytics.com/analytics.js"></script>-->
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<script>
 			(adsbygoogle = window.adsbygoogle || []).push({google_ad_client: "ca-pub-8023167465237689",enable_page_level_ads: true});
@@ -39,7 +40,8 @@
         	描述：答题页
         -->
 		<div id="mission" class="page out">
-			<div class="tx-r">
+			<div class="tx-c ofh">
+				<span class="missionNum"></span>
 				<button class="btn btn-help" onclick="help()">帮助</button>
 			</div>
 			<div class="words">
@@ -128,9 +130,9 @@
 			//生成关卡数
 			for(var i=1;i<=missionCount;i++){
 				if(i<=unlockedCount){
-					missionBlocks+='<div class="mission active" onclick="chooseMission(this)"><a href="#mission">'+i+'</a></div>';	
+					missionBlocks+='<div class="mission active" onclick="chooseMission(this)" currentId="'+i+'"><a href="#mission">'+i+'</a></div>';	
 				}else{
-					missionBlocks+='<div class="mission" onclick="chooseMission(this)"><span>'+i+'</span></div>';
+					missionBlocks+='<div class="mission" onclick="chooseMission(this)" currentId="'+i+'"><span>'+i+'</span></div>';
 				}
 			}
 			$(".mission-blocks").html(missionBlocks)
@@ -171,7 +173,7 @@
 				})
 			}
 			//选择关卡
-			function chooseMission(obj){
+			function chooseMission(obj,snum){
 				if(!$(obj).hasClass("active")){
 					tip("关卡未解锁，请完成前面关卡来解锁")
 				}else{
@@ -181,6 +183,12 @@
 					chooseCount=0;
 					userSelect='';
 					$(".words-block>span").removeClass("empty");
+				}
+				if(!snum){
+					var currentid=$(obj).attr("currentid");
+					$(".missionNum").text("当前正在第"+currentid+"关")
+				}else{
+					$(".missionNum").text("当前正在第"+snum+"关")
 				}
 			}
 			
@@ -276,7 +284,7 @@
     				$("#picker").text("选关");
     				var missionIndex=~~(data.join(""));
     				if(missionIndex<=unlockedCount){
-  						chooseMission($(".mission").eq(missionIndex-1));
+  						chooseMission($(".mission").eq(missionIndex-1),missionIndex);
   					}else{
   						alert("您选的关卡还未解锁");
   					}

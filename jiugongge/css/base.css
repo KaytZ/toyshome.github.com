@@ -147,6 +147,9 @@ input, select {
 .tx-r{
 	text-align: right;
 }
+.ofh{
+	overflow: hidden;
+}
 .btn{
 	background-color:#89c997;
 	border:1px solid #666;
@@ -264,10 +267,15 @@ input, select {
 }
 .btn-help{
 	margin-right:10px;
+	float:right;
 }
 #mission{
 	box-sizing: border-box;
 	padding:20px;
+}
+.missionNum{
+	font-size:20px;
+	line-height: 30px;
 }
 .words{
 	margin-top: 20px;
@@ -300,7 +308,7 @@ input, select {
 	transform: translate(-50%,-50%);
 }
 .answer{
-	margin-top:50px;
+	margin-top:30px;
 	display: flex;
 	display: -webkit-flex;
 	justify-content: center;
