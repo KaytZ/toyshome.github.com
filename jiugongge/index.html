@@ -153,6 +153,8 @@
 			function gohome(){
 				$(".correct-pop").hide();
 				$(".mask").hide();
+				$(".words-block").removeClass("empty");
+				chooseCount=0;
 			}
 			/***
 			 * ***随机排序
@@ -217,6 +219,7 @@
 				if(missionIndex==missionCount){
 					$(".btn-gohome").show();
 					$(".btn-next").hide();
+//					unlockedCount-=1;//修正最后一关答题正确后unlockedCount也会加1的误差
 				}else{
 					$(".btn-gohome").hide();
 					$(".btn-next").show();
@@ -231,8 +234,11 @@
 					$(".answer-words").each(function(){
 						selectWords+=$(this).text();
 					})
+					
 					if(selectWords==answerText){
-							unlockedCount++;
+							if(missionIndex==unlockedCount&&unlockedCount<missionCount){
+								unlockedCount++;
+							}
 							$(".answer-words").addClass("correct")
 							$(".correct-pop").show();
 							$(".mask").show();
