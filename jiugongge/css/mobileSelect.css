@@ -144,7 +144,7 @@
 }
 .mobileSelect-show {
   opacity: 1;
-  z-index: 10000;
+  z-index: 99998;
   visibility: visible;
 }
 .mobileSelect-show .content {
