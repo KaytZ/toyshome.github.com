@@ -335,7 +335,7 @@ input, select {
 	box-shadow:0 0 0 1px #e4393c;
 }
 .qr{width: 200px;height: 200px;}
-.mask{background-color:rgba(0,0,0,.4);display: none;}
+.mask{background-color:rgba(0,0,0,.8);display: none;}
 .help{
 	display: none;
 	position:fixed;
@@ -381,6 +381,10 @@ input, select {
 	padding: 8px 6px;
 	margin-right: 10px;
 	font-size:16px;
+	position:relative;
+}
+.btn-correct-g .btn.active{
+	background:#FFAB5A;
 }
 .btn-first-see{
 	margin-right: 0;
@@ -392,4 +396,11 @@ input, select {
 	left:50%;
 	-webkit-transform: translateX(-50%);
 	transform: translateX(-50%);
+}
+.add-one{
+	width:20px;
+	position:absolute;
+	top:-8px;
+	right:-8px;
+	display: none;
 }

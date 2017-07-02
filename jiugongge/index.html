@@ -84,10 +84,10 @@
 						1<br>1<br>1<br>1<br>1<br>
 				</div>
 				<div style="font-size: 14px;font-weight: normal;margin-top: 10px;">你会背这首诗吗?</div>
-				<div class="tx-c" style="margin-top: 10px;">
-					<div class="btn btn-recite">我会背</div>
-					<div class="btn btn-seen">我见过</div>
-					<div class="btn btn-first-see">首次见</div>
+				<div class="tx-c btn-correct-g" style="margin-top: 10px;">
+					<div class="btn btn-recite">我会背<img src="img/1.png" class="add-one"/></div>
+					<div class="btn btn-seen">我见过<img src="img/1.png" class="add-one"/></div>
+					<div class="btn btn-first-see">首次见<img src="img/1.png" class="add-one"/></div>
 				</div>
 			</div>
 			<div class="tx-c">
@@ -260,6 +260,13 @@
 			}
 			$(".btn-next").on("click",function(){
 				nextMisson();
+			})
+			//点击我会背，我见过，首次见
+			$(".btn-correct-g").on("click",".btn",function(){
+				$(".btn-correct-g .btn").removeClass("active");
+				$(".add-one").hide();
+				$(this).find(".add-one").show();
+				$(this).addClass("active");
 			})
 		</script>
 		<script>
