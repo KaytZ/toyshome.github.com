@@ -21,7 +21,7 @@
   width: 100%;
   display: block;
   position: fixed;
-  z-index: 889;
+  z-index:999999;
   color: black;
   -webkit-transition: all 0.4s;
   transition: all 0.4s;
