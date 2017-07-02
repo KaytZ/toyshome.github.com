@@ -118,151 +118,136 @@
 					}
 				});
 			}
+			/******页面初始化获取用户数据*******/
 			getUserData();
-			
-			var missionCount=data.missionCount;//关卡数
-			var unlockedCount=data.unlockedCount;//解锁的关卡数
-			var missionBlocks='';
-			var missionArr=[];//存放题目id的数组
-			var poemText='';//答案出自的诗词的完整内容
-			const GRID_COUNT=9;//9宫格9个格子
-			//随机打乱题目序号
-			for(var n=0;n<missionCount;n++){
-				missionArr.push(n);
-				//打乱后的题目序号数组
-				var sortedMission=missionArr.sort(function(){
-					return Math.random()<0.5;
-				})
-			}
-			//生成关卡数
-			for(var i=1;i<=missionCount;i++){
-				if(i<=unlockedCount){
-					missionBlocks+='<div class="mission active" onclick="chooseMission(this)" currentId="'+i+'"><a href="#mission">'+i+'</a></div>';	
-				}else{
-					missionBlocks+='<div class="mission" onclick="chooseMission(this)" currentId="'+i+'"><span>'+i+'</span></div>';
-				}
-			}
-			$(".mission-blocks").html(missionBlocks)
-			$(".mission").each(function(index,item){
-				$(this).attr("missionid",sortedMission[index]);
-			});
-			
-			//半透明提示框
-			var timer=null;
-			window.tip=function(str){
+			/****Global Variable*****/
+			var missionCount  = data.missionCount,//总关卡数
+				unlockedCount = data.unlockedCount,//已经解锁的关卡数
+				gridText      = '',//九宫格文本
+				answerText    = '', //题目答案
+				missionIndex  = 0 //当前的关卡
+			/****** 提示框
+			 * str 提示文本
+			 * delay 指定秒数后提示消失，单位是毫秒
+			 * ******/
+			function tip(str,delay){
+				var timer=null;
+				s = delay||1000; 
 				$(".tip").text(str).show();
 				clearTimeout(timer)
 				timer=setTimeout(function(){
 					$(".tip").hide();
-				},1000)
+				},s)
 			}
-			
-			var answerWords='';//答案内容
-			var answerLen; //答案长度
-			var chooseCount=0;//选择的字数
-			var userSelect='';//选择的文本内容
-			var currentid=0;//正要闯的关卡序号
-			//生成题目
-			function showMission(content,mid){
-				//生成答案格
-				answerWords=data.subjects[mid].answer;
-				answerLen=answerWords.length;
-				var answerHTML='';
-				for(var k=0;k<answerLen;k++){
-					answerHTML+='<div class="answer-words empty"></div>';
-				}
-				$(".answer").html(answerHTML);
-				//随机打乱九个字填充九宫格
-				var randWords=[].slice.call(content).sort(function(){
-					return Math.random()<0.5
-				});
-				$(".words-block").each(function(index,item){
-					$(this).find("span").text(randWords[index]);
-				})
-			}
-			//选择关卡
-			function chooseMission(obj,snum){
-				if(!$(obj).hasClass("active")){
-					tip("关卡未解锁，请完成前面关卡来解锁")
-				}else{
-					var missionId=$(obj).attr("missionid");
-					var content=data.subjects[missionId].words;
-					showMission(content,missionId);
-					chooseCount=0;
-					userSelect='';
-					poemText=data.subjects[missionId].poem;
-					console.log(poemText)
-					$(".words-block>span").removeClass("empty");
-				}
-				if(!snum){
-					 currentid=$(obj).attr("currentid");
-					$(".missionNum").text("当前正在第"+currentid+"关")
-				}else{
-					$(".missionNum").text("当前正在第"+snum+"关")
-				}
-			}
-			
-			//点击九宫格
-			$(".words").on("click",".words-block",function(){
-				if(chooseCount<answerLen&&!$(this).find("span").hasClass("empty")){
-					var _thisText=$(this).find("span").text();
-					var index=$(this).index();
-					$(this).find("span").text("").addClass("empty");
-					$(".answer-words.empty").eq(0).text(_thisText).attr("word-index",index).removeClass("empty");
-					chooseCount++;
-				}
-				if(chooseCount==answerLen){
-					$(".answer-words").each(function(index,item){
-						userSelect+=$(this).text();
-					})
-					if(userSelect==answerWords){
-						$(".answer-words").addClass("correct")
-						$(".correct-pop").show();
-						$(".mask").show();
-						$(".answer-txt").text(answerWords)
-					}else{
-						$(".answer-words").addClass("wrong");
-						tip("答错了")
-					}
-					userSelect='';
-				}
-			})
-			//点击答案
-			$(".answer").on("click",".answer-words",function(){
-				if(chooseCount>0&&!$(this).hasClass("empty")){
-					var _thisText=$(this).text();
-					$(".answer-words").removeClass("wrong correct")
-					var ref_index=$(this).attr("word-index");
-					$(this).text("").addClass("empty");
-					$(".words-block").eq(ref_index).find("span").text(_thisText).removeClass("empty");
-					chooseCount--;
-					userSelect='';
-				}
-			})
-			//点击帮助
-			function help(){
-				$(".mask").show();
-				$(".help").show();
-			}
+			/******遮罩mask*****/
 			$(".mask").on("click",function(){
 				$(this).hide();
 				$("[data-pop]").hide();
 			})
-			//下一题
-			function nextMisson(){
-				$(".mission").eq(currentid).addClass("active").html("<a href='#mission'>"+(~~currentid+1)+"</a>");
-				var nextObj=$(".mission").eq(currentid);
-				chooseMission(nextObj);
-				$(".correct-pop").hide();
-				$(".mask").hide();
-				if(currentid>missionCount){
-					tip("这已经是最后一关了")
+			function help(){
+				$(".mask").show();
+				$(".help").show();
+			}
+			/*******随机排序
+			 * 打乱题号
+			 * 打乱九宫格字符顺序
+			 * ********/
+			function sortRandom(arr){
+				if(arr.constructor==Array){
+					return arr.sort(function(){
+						return Math.random()<0.5;
+					})
+				}
+				else if(arr.constructor==String){
+					return arr.split("").sort(function(){
+						return Math.random()<0.5;
+					})
 				}else{
-					tip("这是第"+currentid+"关");
+					return false;
 				}
 			}
-			$(".btn-next").on("click",function(){
-				nextMisson();
+			
+			/*******生成关卡格子
+			 * data-block-index:每个关卡格子的索引
+			 * data-mission-index:每个关卡对应的题目索引（目前题目顺序还未打乱）
+			 * ******/
+			function createMissionBlock(){
+				missionBlocks='';
+				for(var i=1;i<=missionCount;i++){
+					if(i<=unlockedCount){
+						missionBlocks+='<div class="mission active" onclick="chooseMission(this)" data-block-index="'+i+'" data-mission-index="'+i+'"><a href="#mission">'+i+'</a></div>';	
+					}else{
+						missionBlocks+='<div class="mission" onclick="chooseMission(this)" data-block-index="'+i+'" data-mission-index="'+i+'"><span>'+i+'</span></div>';
+					}
+				}
+				$(".mission-blocks").html(missionBlocks)
+			}
+			createMissionBlock();
+			
+			/*******点击关卡格子渲染出对应的题目*******/
+			function chooseMission(obj){
+				var answerBlock='';
+					missionIndex=obj.dataset.missionIndex;
+					answerText=data.subjects[obj.dataset.missionIndex-1].answer;
+				//判断点击的是否是解锁的关卡
+				if(missionIndex<=unlockedCount){
+					//gridText 打乱顺序后的九宫格内容
+					gridText=sortRandom(data.subjects[obj.dataset.missionIndex-1].words);
+					//将文字填入九宫格
+					$(".words-block>span").each(function(index,item){
+						$(this).text(gridText[index]);
+					})
+					//生成答案格子,根据答案长度生成不同的格子数量
+					var answerLen = data.subjects[obj.dataset.missionIndex-1].answer.length;
+					for(var i=0;i<answerLen;i++){
+						answerBlock+='<div class="answer-words empty"></div>';
+					}
+					$(".answer").html(answerBlock);
+				}else{
+					tip("您选的关卡还未解锁");
+				}
+			}
+			
+			/********点击九宫格**********/
+			var chooseCount=0;//已经选择的字符数
+			var selectWords ='';//已经选择的字
+			$(".words-block").on("click",function(){
+				//判断点击的是不是空格子
+				if(!$(this).hasClass("empty")&&chooseCount<$(".answer-words").length){
+					var thisText=$(this).text();
+					$(this).addClass("empty").find("span").text("");
+					chooseCount++;
+					$(".answer-words.empty").eq(0).text(thisText).removeClass("empty")
+					.attr("data-word-index",$(this).index());
+					//判断答案正确
+					if(chooseCount==$(".answer-words").length){
+						$(".answer-words").each(function(){
+							selectWords+=$(this).text();
+						})
+						if(selectWords==answerText){
+							$(".answer-words").addClass("correct")
+							$(".correct-pop").show();
+							$(".mask").show();
+							$(".answer-txt").text(answerText)
+						}else{
+							$(".answer-words").addClass("wrong");
+							tip("答错了")
+						}
+						selectWords='';
+					}
+				}
+			})
+			
+			/******点击答案格子*****/
+			$(".answer").on("click",".answer-words",function(){
+				if(chooseCount>0&&!$(this).hasClass("empty")){
+					$(".answer-words").removeClass("correct wrong");
+					chooseCount--;
+					var thisText=$(this).text();
+					$(this).text("").addClass("empty");
+					$(".words-block").eq($(this).attr("data-word-index"))
+					.removeClass("empty").find("span").text(thisText);
+				}
 			})
 			//点击我会背，我见过，首次见
 			$(".btn-correct-g").on("click",".btn",function(){
@@ -270,6 +255,27 @@
 				$(".add-one").hide();
 				$(this).find(".add-one").show();
 				$(this).addClass("active");
+			})
+			//下一关
+			function nextMission(){
+				unlockedCount++;
+				//题目状态变量重置
+				chooseCount=0;
+				$(".words-block").removeClass("empty");
+				
+				$(".mission").eq(missionIndex).addClass("active").html("<a href='#mission'>"+(~~missionIndex+1)+"</a>");
+				var nextObj=$(".mission").eq(missionIndex)[0];
+				chooseMission(nextObj);
+				$(".correct-pop").hide();
+				$(".mask").hide();
+				if(~~missionIndex+1>missionCount){
+					tip("这已经是最后一关了")
+				}else{
+					tip("这是第"+missionIndex+"关");
+				}
+			}
+			$(".btn-next").on("click",function(){
+				nextMission();
 			})
 		</script>
 		<script>
@@ -304,10 +310,9 @@
     			},
     			callback:function(indexArr, data){
     				$("#picker").text("选关");
-    				currentid=~~(data.join(""));
-    				if(currentid<=unlockedCount){
-//  					poemText=data.subjects[missionArr[currentid]].poem;
-  						chooseMission($(".mission").eq(currentid-1),currentid);
+    				missionIndex=~~(data.join(""));
+    				if(missionIndex<=unlockedCount){
+						chooseMission($(".mission").eq(missionIndex-1)[0]);
   					}else{
   						alert("您选的关卡还未解锁");
   					}
