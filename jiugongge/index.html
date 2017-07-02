@@ -91,7 +91,8 @@
 				</div>
 			</div>
 			<div class="tx-c">
-				<button class="btn btn-next" style="font-size: 20px;" onclick="nextMisson()">下一关</button>
+				<button class="btn btn-next" style="font-size: 20px;" onclick="nextMission()">下一关</button>
+				<a class="btn btn-gohome  hide" style="font-size: 20px;" href="#pageHome" onclick="gohome()">返回首页</a>
 			</div>
         </div>
 		<div class="mask"></div>
@@ -149,7 +150,12 @@
 				$(".mask").show();
 				$(".help").show();
 			}
-			/*******随机排序
+			function gohome(){
+				$(".correct-pop").hide();
+				$(".mask").hide();
+			}
+			/***
+			 * ***随机排序
 			 * 打乱题号
 			 * 打乱九宫格字符顺序
 			 * ********/
@@ -207,6 +213,14 @@
 				}else{
 					tip("您选的关卡还未解锁");
 				}
+				//如果是最后一关,答对题之后的弹窗信息会改变
+				if(missionIndex==missionCount){
+					$(".btn-gohome").show();
+					$(".btn-next").hide();
+				}else{
+					$(".btn-gohome").hide();
+					$(".btn-next").show();
+				}
 			}
 			
 			var chooseCount=0;//已经选择的字符数
@@ -218,13 +232,13 @@
 						selectWords+=$(this).text();
 					})
 					if(selectWords==answerText){
-						unlockedCount++;
-						$(".answer-words").addClass("correct")
-						$(".correct-pop").show();
-						$(".mask").show();
-						$(".answer-txt").text(answerText)
-						$(".mobileSelect").remove();
-						createPicker();
+							unlockedCount++;
+							$(".answer-words").addClass("correct")
+							$(".correct-pop").show();
+							$(".mask").show();
+							$(".answer-txt").text(answerText)
+							$(".mobileSelect").remove();
+							createPicker();
 					}else{
 						$(".answer-words").addClass("wrong");
 						tip("答错了")
@@ -268,20 +282,21 @@
 			})
 			//下一关
 			function nextMission(){
-				//题目状态变量重置
-				chooseCount=0;
-				$(".words-block").removeClass("empty");
+					//题目状态变量重置
+					chooseCount=0;
+					$(".words-block").removeClass("empty");
 				
-				$(".mission").eq(missionIndex).addClass("active").html("<a href='#mission'>"+(~~missionIndex+1)+"</a>");
-				var nextObj=$(".mission").eq(missionIndex)[0];
-				chooseMission(nextObj);
-				$(".correct-pop").hide();
-				$(".mask").hide();
-				if(~~missionIndex+1>missionCount){
-					tip("这已经是最后一关了")
-				}else{
-					tip("这是第"+missionIndex+"关");
-				}
+					$(".mission").eq(missionIndex).addClass("active").html("<a href='#mission'>"+(~~missionIndex+1)+"</a>");
+					var nextObj=$(".mission").eq(missionIndex)[0];
+					chooseMission(nextObj);
+					$(".correct-pop").hide();
+					$(".mask").hide();
+					if(~~missionIndex+1>missionCount){
+						tip("这已经是最后一关了")
+					}else{
+						tip("这是第"+missionIndex+"关");
+					}
+				
 			}
 			
 			//选关，picker插件

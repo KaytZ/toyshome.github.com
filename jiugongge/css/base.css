@@ -390,7 +390,7 @@ input, select {
 .btn-first-see{
 	margin-right: 0;
 }
-.btn-next{
+.btn-next,.btn-gohome{
 	padding:6px 20px;
 	position: absolute;
 	bottom: 0;
