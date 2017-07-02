@@ -291,9 +291,9 @@
 		function createPicker(){
 			var numArr=[0,1,2,3,4,5,6,7,8,9];
 			var gw = unlockedCount%10;
-			var sw = unlockedCount/10 % 10;
-			var bw = unlockedCount/100 % 10;
-			var qw = unlockedCount/1000 % 10;
+			var sw = ~~(unlockedCount/10)%10;
+			var bw = ~~(unlockedCount/100)%10;
+			var qw = ~~(unlockedCount/1000)%10;
 			var mobileSelect3 = new MobileSelect({
     			trigger: '#picker',
     			title: '已解锁<span style="color:#FE6C3D">'+unlockedCount+'</span>关',
