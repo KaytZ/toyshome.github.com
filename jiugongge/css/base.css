@@ -118,7 +118,7 @@ input, select {
 	position: fixed;
 	left:0;
 	bottom:0;
-	z-index: 99999;
+	z-index: 9999;
 }
 @media screen and (min-width:420px){
   .wrap{

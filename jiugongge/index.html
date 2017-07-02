@@ -208,9 +208,30 @@
 				}
 			}
 			
-			/********点击九宫格**********/
 			var chooseCount=0;//已经选择的字符数
 			var selectWords ='';//已经选择的字
+				/***判断对错*****/
+			function judge(){
+				if(chooseCount==$(".answer-words").length){
+					$(".answer-words").each(function(){
+						selectWords+=$(this).text();
+					})
+					if(selectWords==answerText){
+						unlockedCount++;
+						$(".answer-words").addClass("correct")
+						$(".correct-pop").show();
+						$(".mask").show();
+						$(".answer-txt").text(answerText)
+						$(".mobileSelect").remove();
+						createPicker();
+					}else{
+						$(".answer-words").addClass("wrong");
+						tip("答错了")
+					}
+					selectWords='';
+				}
+			}
+			/********点击九宫格**********/
 			$(".words-block").on("click",function(){
 				//判断点击的是不是空格子
 				if(!$(this).hasClass("empty")&&chooseCount<$(".answer-words").length){
@@ -220,21 +241,9 @@
 					$(".answer-words.empty").eq(0).text(thisText).removeClass("empty")
 					.attr("data-word-index",$(this).index());
 					//判断答案正确
-					if(chooseCount==$(".answer-words").length){
-						$(".answer-words").each(function(){
-							selectWords+=$(this).text();
-						})
-						if(selectWords==answerText){
-							$(".answer-words").addClass("correct")
-							$(".correct-pop").show();
-							$(".mask").show();
-							$(".answer-txt").text(answerText)
-						}else{
-							$(".answer-words").addClass("wrong");
-							tip("答错了")
-						}
-						selectWords='';
-					}
+					judge();
+				}else if(chooseCount=$(".answer-words").length){
+					judge();
 				}
 			})
 			
@@ -258,7 +267,6 @@
 			})
 			//下一关
 			function nextMission(){
-				unlockedCount++;
 				//题目状态变量重置
 				chooseCount=0;
 				$(".words-block").removeClass("empty");
@@ -277,16 +285,15 @@
 			$(".btn-next").on("click",function(){
 				nextMission();
 			})
-		</script>
-		<script>
 			//选关，picker插件
+		var isClose=true;
+		function createPicker(){
 			var numArr=[0,1,2,3,4,5,6,7,8,9];
 			var gw = unlockedCount%10;
 			var sw = unlockedCount/10 % 10;
 			var bw = unlockedCount/100 % 10;
 			var qw = unlockedCount/100 % 10;
 			var ww = unlockedCount/100 % 10;
-			var isClose=true;
 			var mobileSelect3 = new MobileSelect({
     			trigger: '#picker',
     			title: '已解锁<span style="color:#FE6C3D">'+unlockedCount+'</span>关',
@@ -318,6 +325,8 @@
   					}
     			}
 			});
+		}
+		createPicker();
 		</script>
 	</body>
 </html>
