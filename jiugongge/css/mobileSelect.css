@@ -21,7 +21,7 @@
   width: 100%;
   display: block;
   position: fixed;
-  z-index:999999;
+  z-index:9999999999;
   color: black;
   -webkit-transition: all 0.4s;
   transition: all 0.4s;
@@ -144,7 +144,7 @@
 }
 .mobileSelect-show {
   opacity: 1;
-  z-index: 99998;
+  z-index:9999999998;
   visibility: visible;
 }
 .mobileSelect-show .content {
