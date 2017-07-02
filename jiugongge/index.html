@@ -76,16 +76,22 @@
         -->
         <div class="correct-pop" data-pop>
 			<div class="correct-content tx-c">
-				<div class="answer-txt">窗前明月光</div>
-				<div>【出自】</div>
-				<div class="poem-info">唐·李白 《静夜思》</div>
-				<button class="btn btn-next" style="font-size: 20px;">下一关</button>
+				<div class="answer-txt">床前明月光</div>
+				<div class="poem-info">【出自】唐·李白 《静夜思》</div>
+				<div class="poem-content">
+						床前明月光，疑是地上霜。<br>
+						举头望明月，低头思故乡。
+						1<br>1<br>1<br>1<br>1<br>
+				</div>
 				<div style="font-size: 14px;font-weight: normal;margin-top: 10px;">你会背这首诗吗?</div>
 				<div class="tx-c" style="margin-top: 10px;">
 					<div class="btn btn-recite">我会背</div>
 					<div class="btn btn-seen">我见过</div>
 					<div class="btn btn-first-see">首次见</div>
 				</div>
+			</div>
+			<div class="tx-c">
+				<button class="btn btn-next" style="font-size: 20px;">下一关</button>
 			</div>
         </div>
 		<div class="mask"></div>
@@ -262,16 +268,20 @@
 			var gw = unlockedCount%10;
 			var sw = unlockedCount/10 % 10;
 			var bw = unlockedCount/100 % 10;
+			var qw = unlockedCount/100 % 10;
+			var ww = unlockedCount/100 % 10;
 			var isClose=true;
 			var mobileSelect3 = new MobileSelect({
     			trigger: '#picker',
-    			title: '关卡选择',
+    			title: '已解锁<span style="color:#FE6C3D">'+unlockedCount+'</span>关',
     			wheels: [
                 	{data: numArr},
                 	{data: numArr},
                 	{data: numArr},
+                	{data: numArr},
+                	{data: numArr}
             	],
-    			position:[0, 0, 1], 
+    			position:[ww,qw,bw,sw,gw], 
     			transitionEnd:function(indexArr,data){
     				var selectIndex=~~(data.join(""));
     				if(selectIndex>unlockedCount){

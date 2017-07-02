@@ -216,7 +216,7 @@ input, select {
 	display: block;
 	width:100%;
 	height:100%;
-	color:#007AFF;
+	color:#89c997;
 }
 /*choosemission*/
 .title1{
@@ -354,14 +354,14 @@ input, select {
 	left: 50%;top: 50%;
 	transform: translate(-50%,-50%);
 	-webkit-transform: translate(-50%,-50%);
-	width:248px ;height:278px ;
+	width:248px ;height:328px ;
 	background:url(../img/correct.png) no-repeat;
-	background-size: cover;
+	background-size:contain;
 }
 .correct-content{
 	margin-top:70px;
 }
-.correct-content>div{
+.answer-txt{
 	font-size:18px;
 	font-weight: bold;
 }
@@ -370,6 +370,12 @@ input, select {
 }
 .poem-info{
 	margin: 10px auto;
+	font-size: 14px;
+}
+.poem-content{
+	line-height:1.2;
+	height:66px;
+	overflow-y:auto ;
 }
 .btn-recite,.btn-first-see,.btn-seen{
 	padding: 8px 6px;
@@ -378,4 +384,12 @@ input, select {
 }
 .btn-first-see{
 	margin-right: 0;
+}
+.btn-next{
+	padding:6px 20px;
+	position: absolute;
+	bottom: 0;
+	left:50%;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
 }

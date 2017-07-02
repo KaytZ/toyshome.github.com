@@ -42,7 +42,7 @@
   visibility: hidden;
 }
 .mobileSelect .content .btnBar {
-  border-bottom: 1px solid #DCDCDC;
+  /*border-bottom: 1px solid #DCDCDC;*/
   font-size: 15px;
   height: 45px;
   position: relative;
@@ -58,17 +58,27 @@
   top: 0;
 }
 .mobileSelect .content .btnBar .cancel {
-  left: 0;
+  right: 0;
   color: #666;
 }
 .mobileSelect .content .btnBar .ensure {
-  right: 0;
+  left: 0;
   color: #1e83d3;
 }
 .mobileSelect .content .btnBar .title {
   font-size: 15px;
   margin:0 auto;
   letter-spacing: 0px;
+}
+.mobileSelect .content .title{
+	font-size: 15px;
+  margin:0 auto;
+  letter-spacing: 0px;
+  text-align: center;
+  padding-top:20px;
+}
+.mobileSelect .content .btnBar,.mobileSelect .content .title{
+	background: #f3f3f3;
 }
 .mobileSelect .content .panel:after {
   content: ".";
