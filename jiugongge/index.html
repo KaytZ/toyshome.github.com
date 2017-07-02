@@ -91,7 +91,7 @@
 				</div>
 			</div>
 			<div class="tx-c">
-				<button class="btn btn-next" style="font-size: 20px;">下一关</button>
+				<button class="btn btn-next" style="font-size: 20px;" onclick="nextMisson()">下一关</button>
 			</div>
         </div>
 		<div class="mask"></div>
@@ -102,11 +102,11 @@
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<script>
 			(adsbygoogle = window.adsbygoogle || []).push({});
-			$("ins").css("z-index","9999");
 		</script>
 		<script>
 			window.onload=function(){
 				$(".loading-mask").hide();
+				$(".adsbygoogle").css("z-index","9998");
 			}
 			var data;//模拟的json数据
 			function getUserData(){
@@ -283,9 +283,7 @@
 					tip("这是第"+missionIndex+"关");
 				}
 			}
-			$(".btn-next").on("click",function(){
-				nextMission();
-			})
+			
 			//选关，picker插件
 		var isClose=true;
 		function createPicker(){
