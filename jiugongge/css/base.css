@@ -164,6 +164,7 @@ input, select {
 /*pop*/
 .tip{
 	position:fixed;
+	z-index:99999999;
 	top:50%;left:50%;
 	-webkit-transform:translate(-50%,-50%);
 	transform:translate(-50%,-50%);
@@ -181,13 +182,13 @@ input, select {
 	
 	position:relative;
 }
-.title{
+/*.title{
 	font-weight:bold;
 	font-size:40px;
 	letter-spacing: 10px;
 	margin-top: 100px;
 	margin-bottom: 100px;
-}
+}*/
 .btn-begin,.btn-more,.btn-choose,.btn-picker{
 	display: block;
 	font-size:20px;
@@ -210,7 +211,7 @@ input, select {
 	font-weight:bold;
 }
 .main-logo{
-	width:271px;margin-top:80px;margin-bottom:80px;
+	width:271px;margin-top:80px;margin-bottom:60px;
 }
 .ensure a{
 	display: block;

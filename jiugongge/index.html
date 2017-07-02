@@ -102,7 +102,7 @@
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<script>
 			(adsbygoogle = window.adsbygoogle || []).push({});
-			$("ins").css("z-index","9999999");
+			$("ins").css("z-index","9999");
 		</script>
 		<script>
 			window.onload=function(){
@@ -293,8 +293,7 @@
 			var gw = unlockedCount%10;
 			var sw = unlockedCount/10 % 10;
 			var bw = unlockedCount/100 % 10;
-			var qw = unlockedCount/100 % 10;
-			var ww = unlockedCount/100 % 10;
+			var qw = unlockedCount/1000 % 10;
 			var mobileSelect3 = new MobileSelect({
     			trigger: '#picker',
     			title: '已解锁<span style="color:#FE6C3D">'+unlockedCount+'</span>关',
@@ -302,13 +301,12 @@
                 	{data: numArr},
                 	{data: numArr},
                 	{data: numArr},
-                	{data: numArr},
                 	{data: numArr}
             	],
-    			position:[ww,qw,bw,sw,gw], 
+    			position:[qw,bw,sw,gw], 
     			transitionEnd:function(indexArr,data){
     				var selectIndex=~~(data.join(""));
-    				if(selectIndex>unlockedCount){
+    				if(selectIndex>unlockedCount||selectIndex==0){
     					isClose=false;
     					$(".ensure>a").removeAttr("href");
     				}else{
@@ -319,11 +317,11 @@
     			callback:function(indexArr, data){
     				$("#picker").text("选关");
     				missionIndex=~~(data.join(""));
-    				if(missionIndex<=unlockedCount){
+    				if(missionIndex<=unlockedCount&&missionIndex!=0){
 						chooseMission($(".mission").eq(missionIndex-1)[0]);
-  					}else{
-  						alert("您选的关卡还未解锁");
-  					}
+					}else{
+						alert("您选的关卡还未解锁");
+					}
     			}
 			});
 		}

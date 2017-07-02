@@ -113,10 +113,10 @@ window.MobileSelect = (function() {
 			_this.mobileSelect.innerHTML = 
 		    	'<div class="grayLayer"></div>'+
 		        '<div class="content">'+
-		        	'<div class="title"></div>'+
 		            '<div class="btnBar">'+
 		                '<div class="fixWidth">'+
 		                    '<div class="cancel">取消</div>'+
+		                    '<div class="title"></div>'+
 		                    '<div class="ensure"><a href="#mission">选择</a></div>'+
 		                '</div>'+
 		            '</div>'+
