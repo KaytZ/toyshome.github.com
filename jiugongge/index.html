@@ -155,6 +155,7 @@
 				$(".mask").hide();
 				$(".words-block").removeClass("empty");
 				chooseCount=0;
+				chooseMission($(".mission:last-child")[0])//修复答完最后一题后，用户返回首页按钮后再点击退回到上一页后九宫格点击的bug
 			}
 			/***
 			 * ***随机排序
