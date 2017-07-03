@@ -40,7 +40,7 @@
         	描述：答题页
         -->
 		<div id="mission" class="page out">
-			<div class="tx-c ofh">
+			<div class="tx-c ofh relative">
 				<span class="missionNum"></span>
 				<button class="btn btn-help" onclick="help()">帮助</button>
 			</div>
@@ -223,6 +223,7 @@
 						answerBlock+='<div class="answer-words empty"></div>';
 					}
 					$(".answer").html(answerBlock);
+					$(".missionNum").text("当前正在第"+missionIndex+"关")
 				}else{
 					tip("您选的关卡还未解锁");
 				}
