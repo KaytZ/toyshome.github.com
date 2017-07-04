@@ -78,11 +78,7 @@
 			<div class="correct-content tx-c">
 				<div class="answer-txt">床前明月光</div>
 				<div class="poem-info">【出自】唐·李白 《静夜思》</div>
-				<div class="poem-content">
-						床前明月光，疑是地上霜。<br>
-						举头望明月，低头思故乡。
-						1<br>1<br>1<br>1<br>1<br>
-				</div>
+				<div class="poem-content"></div>
 				<div style="font-size: 14px;font-weight: normal;margin-top: 10px;">你会背这首诗吗?</div>
 				<div class="tx-c btn-correct-g" style="margin-top: 10px;">
 					<div class="btn btn-recite">我会背<img src="img/1.png" class="add-one"/></div>
@@ -92,7 +88,7 @@
 			</div>
 			<div class="tx-c">
 				<button class="btn btn-next" style="font-size: 20px;" onclick="nextMission()">下一关</button>
-				<a class="btn btn-gohome  hide" style="font-size: 20px;" href="#pageHome" onclick="gohome()">返回首页</a>
+				<a class="btn btn-gohome  hide" style="font-size: 20px;" href="#pageHome" onclick="gohome()" data-rel="back">返回首页</a>
 			</div>
         </div>
 		<div class="mask"></div>
@@ -104,7 +100,7 @@
 		<script>
 			(adsbygoogle = window.adsbygoogle || []).push({});
 		</script>
-		<script>
+		<script>	
 			window.onload=function(){
 				$(".loading-mask").hide();
 				$(".adsbygoogle").css("z-index","9998");
@@ -127,6 +123,7 @@
 				unlockedCount = data.unlockedCount,//已经解锁的关卡数
 				gridText      = '',//九宫格文本
 				answerText    = '', //题目答案
+				poemText      = '',//完整的诗词
 				missionIndex  = 0 //当前的关卡
 			/****** 提示框
 			 * str 提示文本
@@ -162,7 +159,7 @@
 			}
 			//页面后退的时候重置状态
 			window.onhashchange=function(){
-				$(".correct-pop").hide();
+				$("[data-pop]").hide();
 				$(".mask").hide();
 				$(".words-block").removeClass("empty");
 				chooseCount=0;
@@ -209,6 +206,7 @@
 				var answerBlock='';
 					missionIndex=obj.dataset.missionIndex;
 					answerText=data.subjects[obj.dataset.missionIndex-1].answer;
+					poem=data.subjects[obj.dataset.missionIndex-1].poem;
 				//判断点击的是否是解锁的关卡
 				if(missionIndex<=unlockedCount){
 					//gridText 打乱顺序后的九宫格内容
@@ -257,12 +255,13 @@
 							$(".answer-words").addClass("correct")
 							$(".correct-pop").show();
 							$(".mask").show();
-							$(".answer-txt").text(answerText)
+							$(".answer-txt").text(answerText);
+							$(".poem-content").html(poem);
 							$(".mobileSelect").remove();
 							createPicker();
 					}else{
 						$(".answer-words").addClass("wrong");
-						tip("答错了")
+						tip("答错了,点击下方的格子可以取消")
 					}
 					selectWords='';
 				}
