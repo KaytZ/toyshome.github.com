@@ -124,6 +124,7 @@
 				gridText      = '',//九宫格文本
 				answerText    = '', //题目答案
 				poemText      = '',//完整的诗词
+				author        = '',//作者
 				missionIndex  = 0 //当前的关卡
 			/****** 提示框
 			 * str 提示文本
@@ -204,9 +205,10 @@
 			/*******点击关卡格子渲染出对应的题目*******/
 			function chooseMission(obj){
 				var answerBlock='';
-					missionIndex=obj.dataset.missionIndex;
-					answerText=data.subjects[obj.dataset.missionIndex-1].answer;
-					poem=data.subjects[obj.dataset.missionIndex-1].poem;
+					missionIndex = obj.dataset.missionIndex;
+					answerText   = data.subjects[obj.dataset.missionIndex-1].answer;
+					poemText     = data.subjects[obj.dataset.missionIndex-1].poem;
+					author       = data.subjects[obj.dataset.missionIndex-1].author
 				//判断点击的是否是解锁的关卡
 				if(missionIndex<=unlockedCount){
 					//gridText 打乱顺序后的九宫格内容
@@ -256,7 +258,8 @@
 							$(".correct-pop").show();
 							$(".mask").show();
 							$(".answer-txt").text(answerText);
-							$(".poem-content").html(poem);
+							$(".poem-content").html(poemText);
+							$(".poem-info").text(author);
 							$(".mobileSelect").remove();
 							createPicker();
 					}else{

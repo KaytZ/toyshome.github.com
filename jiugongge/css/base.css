@@ -359,7 +359,7 @@ input, select {
 	left: 50%;top: 50%;
 	transform: translate(-50%,-50%);
 	-webkit-transform: translate(-50%,-50%);
-	width:248px ;height:328px ;
+	width:278px ;height:360px ;
 	background:url(../img/correct.png) no-repeat;
 	background-size:contain;
 }
@@ -379,8 +379,10 @@ input, select {
 }
 .poem-content{
 	line-height:1.2;
-	height:66px;
+	height:100px;
 	overflow-y:auto ;
+	/*text-align: left;*/
+	padding:0 10px;
 }
 .btn-recite,.btn-first-see,.btn-seen{
 	padding: 8px 6px;
