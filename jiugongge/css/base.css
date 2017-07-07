@@ -405,12 +405,18 @@ keyframes flash{
 }
 .btn-recite,.btn-first-see,.btn-seen{
 	padding: 8px 6px;
-	margin-right: 10px;
 	font-size:16px;
-	position:relative;
 }
 .btn-correct-g .btn.active{
 	background:#FFAB5A;
+}
+.btn-correct-g{
+	display: flex;
+	display: -webkit-flex;
+}
+.btn-correct-g>.relative{
+	flex: 1;
+	-webkit-flex: 1;
 }
 .btn-first-see{
 	margin-right: 0;
@@ -427,6 +433,6 @@ keyframes flash{
 	width:20px;
 	position:absolute;
 	top:-8px;
-	right:-8px;
+	right:6px;
 	display: none;
 }

@@ -81,9 +81,36 @@
 				<div class="poem-content"></div>
 				<div style="font-size: 14px;font-weight: normal;margin-top: 10px;">你会背这首诗吗?</div>
 				<div class="tx-c btn-correct-g" style="margin-top: 10px;">
-					<div class="btn btn-recite">我会背<img src="img/1.png" class="add-one"/></div>
-					<div class="btn btn-seen">我见过<img src="img/1.png" class="add-one"/></div>
-					<div class="btn btn-first-see">首次见<img src="img/1.png" class="add-one"/></div>
+					<div class="relative tx-c">
+						<div class="hasSt hide">
+							<div  style="color:#F0AD4E;margin-bottom: 6px;">40%</div>
+							<div><b>我会背</b></div>
+						</div>
+						<div class="btn btn-recite">
+							<div>我会背</div>
+							<img src="img/1.png" class="add-one"/>
+						</div>
+					</div>
+					<div class="relative tx-c">
+						<div class="hasSt hide">
+							<div  style="color:#F0AD4E;margin-bottom: 6px;">40%</div>
+							<div><b>我见过</b></div>
+						</div>
+						<div class="btn btn-seen">
+							<div>我见过</div>
+							<img src="img/1.png" class="add-one"/>
+						</div>
+					</div>
+					<div class="relative tx-c">
+						<div class="hasSt hide">
+							<div  style="color:#F0AD4E;margin-bottom: 6px;">20%</div>
+							<div><b>首次见</b></div>
+						</div>
+						<div class="btn btn-first-see">
+							<div>首次见</div>
+							<img src="img/1.png" class="add-one"/>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="tx-c">
@@ -125,7 +152,9 @@
 				answerText    = '', //题目答案
 				poemText      = '',//完整的诗词
 				author        = '',//作者
-				missionIndex  = 0 //当前的关卡
+				missionIndex  = 0, //当前的关卡
+				stateArr      = [],
+				isSelected    = {"index":0,"state":0};
 			/****** 提示框
 			 * str 提示文本
 			 * delay 指定秒数后提示消失，单位是毫秒
@@ -139,7 +168,11 @@
 					$(".tip").hide();
 				},s)
 			}
-
+			//
+			for(var k in data.subjects){
+				stateArr.push(data.subjects[k].state);
+			}
+			console.log(stateArr)
 			//帮助按钮
 			var maskHide=false;
 			function help(){
@@ -162,7 +195,7 @@
 				$(".words-block").removeClass("empty").html("<span></span>");
 				chooseCount=0;
 				chooseMission(unlockedCount)//修复答完最后一题后，用户返回首页按钮后再点击退回到上一页后九宫格点击的bug
-				
+				stateArr[isSelected.index-1]=1;
 			}
 			//页面后退的时候重置状态
 			window.onhashchange=function(){
@@ -259,13 +292,22 @@
 								unlockedCount++;
 							}
 							//刷新关卡选择的div
-							$(".mission").eq(missionIndex).addClass("active").html("<a href='#mission'>"+(~~missionIndex+1)+"</a>");
+//							$(".mission").eq(missionIndex).addClass("active").html("<a href='#mission'>"+(~~missionIndex+1)+"</a>");
 							$(".answer-words").addClass("correct")
 							$(".correct-pop").show();
 							$(".mask").show();
 							$(".answer-txt").text(answerText);
 							$(".poem-content").html(poemText);
 							$(".poem-info").text("【出自】"+author);
+							sState=stateArr[missionIndex-1];
+							if(sState!=0){
+								$(".btn-correct-g .btn").hide();
+								$(".hasSt").show();
+							}else{
+								$(".btn-correct-g .btn").show();
+								$(".hasSt").hide();
+							}
+							
 							$(".mobileSelect").remove();
 							createPicker();
 					}else{
@@ -313,6 +355,7 @@
 				$(".add-one").hide();
 				$(this).find(".add-one").show();
 				$(this).addClass("active");
+				isSelected.index=missionIndex;
 			})
 			//下一关
 			function nextMission(){
@@ -327,10 +370,12 @@
 					}else{
 						tip("这是第"+missionIndex+"关");
 					}
-				
+				stateArr[isSelected.index-1]=1;
 			}
 		/******点击开始*******/
 		$(".btn-begin").on("click",function(){
+			$(".words-block").removeClass("empty").html("<span></span>")
+			$(".add-one").hide();
 			chooseMission(unlockedCount)			
 		})
 		
@@ -364,6 +409,8 @@
     			},
     			callback:function(indexArr, data){
     				$("#picker").text("选关");
+    				$(".words-block").removeClass("empty").html("<span></span>");
+    				$(".add-one").hide();
     				missionIndex=~~(data.join(""));
     				if(missionIndex<=unlockedCount&&missionIndex!=0){
 						chooseMission(missionIndex);
