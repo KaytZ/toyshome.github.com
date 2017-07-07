@@ -22,19 +22,19 @@
 				<div class="loading"></div>
 			</div>
 			<img src="img/main_logo.png" class="main-logo"/>
-			<a class="btn btn-begin" href="#choose-mission">开始</a>
+			<a class="btn btn-begin" href="#mission">开始</a>
 			<a class="btn btn-choose" id="picker">选关</a>
-			<a class="btn btn-begin">更多</a>
+			<a class="btn btn-more" href="http://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NjEyMTE3Mg==&scene=123#wechat_redirect">更多</a>
 			<div class="tx-c">好七喵书院出品</div>
 		</div>
 		<!--
         	时间：2017-06-30
         	描述：选关卡
         -->
-		<div id="choose-mission" class="page out">
+		<!--<div id="choose-mission" class="page out">
 			<div class="title1">选择关卡</div>
 			<div class="mission-blocks"></div>
-		</div>
+		</div>-->
 		<!--
 			时间：2017-06-30
         	描述：答题页
@@ -139,23 +139,29 @@
 					$(".tip").hide();
 				},s)
 			}
-			/******遮罩mask*****/
-			$(".mask").on("click",function(){
-				$(this).hide();
-				$("[data-pop]").hide();
-			})
+
 			//帮助按钮
+			var maskHide=false;
 			function help(){
+				maskHide=true;
 				$(".mask").show();
 				$(".help").show();
 			}
+			//遮罩层mask
+			$(".mask").on("click",function(){
+				if(maskHide){
+					$(this).hide();
+					$("[data-pop]").hide();
+				}
+				maskHide=false;
+			})
 			//返回首页
 			function gohome(){
 				$(".correct-pop").hide();
 				$(".mask").hide();
-				$(".words-block").removeClass("empty");
+				$(".words-block").removeClass("empty").html("<span></span>");
 				chooseCount=0;
-				chooseMission($(".mission:last-child")[0])//修复答完最后一题后，用户返回首页按钮后再点击退回到上一页后九宫格点击的bug
+				chooseMission(unlockedCount)//修复答完最后一题后，用户返回首页按钮后再点击退回到上一页后九宫格点击的bug
 				
 			}
 			//页面后退的时候重置状态
@@ -189,41 +195,41 @@
 			 * data-block-index:每个关卡格子的索引
 			 * data-mission-index:每个关卡对应的题目索引（目前题目顺序还未打乱）
 			 * ******/
-			function createMissionBlock(){
-				missionBlocks='';
-				for(var i=1;i<=missionCount;i++){
-					if(i<=unlockedCount){
-						missionBlocks+='<div class="mission active" onclick="chooseMission(this)" data-block-index="'+i+'" data-mission-index="'+i+'"><a href="#mission">'+i+'</a></div>';	
-					}else{
-						missionBlocks+='<div class="mission" onclick="chooseMission(this)" data-block-index="'+i+'" data-mission-index="'+i+'"><span>'+i+'</span></div>';
-					}
-				}
-				$(".mission-blocks").html(missionBlocks)
-			}
-			createMissionBlock();
+//			function createMissionBlock(){
+//				missionBlocks='';
+//				for(var i=1;i<=missionCount;i++){
+//					if(i<=unlockedCount){
+//						missionBlocks+='<div class="mission active" onclick="chooseMission(this)" data-block-index="'+i+'" data-mission-index="'+i+'"><a href="#mission">'+i+'</a></div>';	
+//					}else{
+//						missionBlocks+='<div class="mission" onclick="chooseMission(this)" data-block-index="'+i+'" data-mission-index="'+i+'"><span>'+i+'</span></div>';
+//					}
+//				}
+//				$(".mission-blocks").html(missionBlocks)
+//			}
+//			createMissionBlock();
 			
 			/*******点击关卡格子渲染出对应的题目*******/
-			function chooseMission(obj){
+			function chooseMission(index){
 				var answerBlock='';
-					missionIndex = obj.dataset.missionIndex;
-					answerText   = data.subjects[obj.dataset.missionIndex-1].answer;
-					poemText     = data.subjects[obj.dataset.missionIndex-1].poem;
-					author       = data.subjects[obj.dataset.missionIndex-1].author
+					missionIndex = index;
+					answerText   = data.subjects[index-1].answer;
+					poemText     = data.subjects[index-1].poem;
+					author       = data.subjects[index-1].author
 				//判断点击的是否是解锁的关卡
 				if(missionIndex<=unlockedCount){
 					//gridText 打乱顺序后的九宫格内容
-					gridText=sortRandom(data.subjects[obj.dataset.missionIndex-1].words);
+					gridText=sortRandom(data.subjects[index-1].words);
 					//将文字填入九宫格
 					$(".words-block>span").each(function(index,item){
 						$(this).text(gridText[index]);
 					})
 					//生成答案格子,根据答案长度生成不同的格子数量
-					var answerLen = data.subjects[obj.dataset.missionIndex-1].answer.length;
+					var answerLen = data.subjects[index-1].answer.length;
 					for(var i=0;i<answerLen;i++){
 						answerBlock+='<div class="answer-words empty"></div>';
 					}
 					$(".answer").html(answerBlock);
-					$(".missionNum").text("当前正在第"+missionIndex+"关")
+					$(".missionNum").text("第"+missionIndex+"关")
 				}else{
 					tip("您选的关卡还未解锁");
 				}
@@ -274,7 +280,7 @@
 				//判断点击的是不是空格子
 				if(!$(this).hasClass("empty")&&chooseCount<$(".answer-words").length){
 					var thisText=$(this).text();
-					$(this).addClass("empty").find("span").text("");
+					$(this).addClass("empty").html("");
 					chooseCount++;
 					$(".answer-words.empty").eq(0).text(thisText).removeClass("empty")
 					.attr("data-word-index",$(this).index());
@@ -288,12 +294,17 @@
 			/******点击答案格子*****/
 			$(".answer").on("click",".answer-words",function(){
 				if(chooseCount>0&&!$(this).hasClass("empty")){
+					$(".answer-words").removeClass("flash");
+					$(this).addClass("flash");
+					$(this).on("animationend",function(){
+						$(this).removeClass("flash")						
+					})
 					$(".answer-words").removeClass("correct wrong");
 					chooseCount--;
 					var thisText=$(this).text();
 					$(this).text("").addClass("empty");
 					$(".words-block").eq($(this).attr("data-word-index"))
-					.removeClass("empty").find("span").text(thisText);
+					.removeClass("empty").html("<span>"+thisText+"</span>");
 				}
 			})
 			//点击我会背，我见过，首次见
@@ -307,10 +318,8 @@
 			function nextMission(){
 					//题目状态变量重置
 					chooseCount=0;
-					$(".words-block").removeClass("empty");
-//					$(".mission").eq(missionIndex).addClass("active").html("<a href='#mission'>"+(~~missionIndex+1)+"</a>");
-					var nextObj=$(".mission").eq(missionIndex)[0];
-					chooseMission(nextObj);
+					$(".words-block").removeClass("empty").html("<span></span>");
+					chooseMission(missionIndex+1);
 					$(".correct-pop").hide();
 					$(".mask").hide();
 					if(~~missionIndex+1>missionCount){
@@ -320,7 +329,11 @@
 					}
 				
 			}
-			
+		/******点击开始*******/
+		$(".btn-begin").on("click",function(){
+			chooseMission(unlockedCount)			
+		})
+		
 			//选关，picker插件
 		var isClose=true;
 		function createPicker(){
@@ -353,7 +366,7 @@
     				$("#picker").text("选关");
     				missionIndex=~~(data.join(""));
     				if(missionIndex<=unlockedCount&&missionIndex!=0){
-						chooseMission($(".mission").eq(missionIndex-1)[0]);
+						chooseMission(missionIndex);
 					}else{
 						alert("您选的关卡还未解锁");
 					}
