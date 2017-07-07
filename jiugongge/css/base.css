@@ -418,6 +418,9 @@ keyframes flash{
 	flex: 1;
 	-webkit-flex: 1;
 }
+.btn-correct-g .active .add-one{
+	display: block;
+}
 .btn-first-see{
 	margin-right: 0;
 }

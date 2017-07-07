@@ -192,6 +192,8 @@
 			function gohome(){
 				$(".correct-pop").hide();
 				$(".mask").hide();
+				$(".btn-correct-g .active").removeClass("active");
+				$(".add-one").hide();
 				$(".words-block").removeClass("empty").html("<span></span>");
 				chooseCount=0;
 				chooseMission(unlockedCount)//修复答完最后一题后，用户返回首页按钮后再点击退回到上一页后九宫格点击的bug
@@ -361,6 +363,8 @@
 			function nextMission(){
 					//题目状态变量重置
 					chooseCount=0;
+					$(".btn-correct-g .active").removeClass("active");
+					$(".add-one").hide();
 					$(".words-block").removeClass("empty").html("<span></span>");
 					chooseMission(missionIndex+1);
 					$(".correct-pop").hide();
@@ -374,8 +378,9 @@
 			}
 		/******点击开始*******/
 		$(".btn-begin").on("click",function(){
-			$(".words-block").removeClass("empty").html("<span></span>")
+			$(".words-block").removeClass("empty").html("<span></span>");
 			$(".add-one").hide();
+			$(".btn-correct-g .active").removeClass("active");
 			chooseMission(unlockedCount)			
 		})
 		
@@ -411,6 +416,7 @@
     				$("#picker").text("选关");
     				$(".words-block").removeClass("empty").html("<span></span>");
     				$(".add-one").hide();
+    				$(".btn-correct-g .active").removeClass("active");
     				missionIndex=~~(data.join(""));
     				if(missionIndex<=unlockedCount&&missionIndex!=0){
 						chooseMission(missionIndex);
