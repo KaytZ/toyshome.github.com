@@ -147,6 +147,9 @@ input, select {
 .tx-r{
 	text-align: right;
 }
+.tx-l{
+	text-align: left;
+}
 .ofh{
 	overflow: hidden;
 }
@@ -328,10 +331,27 @@ keyframes flash{
 	width: 85%;height:85%;
 	background:#fff;
 	top:50%;left:50%;
-	-webkit-transform: translate(-50%,-50%);
-	transform: translate(-50%,-50%);
+}
+.words-block>span{
+	-webkit-transition:all .3s linear;
+	transition:all .3s linear;
+	-webkit-transform-origin:0 0;
+	transform-origin:0 0;
+	-webkit-transform:scale(1) translate(-50%,-50%);
+	transform: scale(1) translate(-50%,-50%);
+	opacity: 1;
+}
+.words-block.empty>span{
+	-webkit-transition:all .3s linear;
+	transition:all .3s linear;
+	-webkit-transform:scale(0.1) translate(-50%,-50%);
+	transform: scale(0.1) translate(-50%,-50%);
+	-webkit-transform-origin:0 0;
+	transform-origin:0 0;
+	opacity: 0;
 }
 .answer{
+	position:relative;
 	margin-top:30px;
 	display: flex;
 	display: -webkit-flex;
@@ -348,18 +368,61 @@ keyframes flash{
 	border:1px solid #333333;
 	background:#FDD87F;
 }
+.answer-words.empty span{
+	opacity: 0;
+	/*-webkit-transition: all 0.5s;
+	transition: all 0.5s;*/
+	-webkit-transform: scale(0.1);
+	transform: scale(0.1);
+}
+.answer-words span{
+	opacity:1;
+	-webkit-transition: all 0.5s;
+	transition: all 0.5s;
+	-webkit-transform: scale(1);
+	transform: scale(1);
+}
+
 .answer-words.correct{
 	border-color: transparent;
-	color:#2DC65A;
 	box-shadow:0 0 0 1px #2DC65A;
+}
+.answer-words.correct span{
+	color:#2DC65A;
 }
 .answer-words.wrong{
 	border-color: transparent;
-	color:#e4393c;
 	box-shadow:0 0 0 1px #e4393c;
+}
+.answer-words span{
+	display: block;
+	width:100%;
+	height:100%;
+	opacity: 1;
+	-webkit-transition: all 0.5s;
+	transition: all 0.5s;
+	-webkit-transform: scale(1);
+	transform: scale(1);
+}
+.answer-words.wrong span{
+	color:#e4393c;
+}
+.shake{
+	-webkit-animation:shake .1s ease-in-out;
+	-webkit-animation-iteration-count: 4;
+}
+@-webkit-keyframes shake{
+	from{-webkit-transform: translateX(2px) rotate(2deg);}
+	to{-webkit-transform: translateX(-2px) rotate(-2deg)}
 }
 .qr{width: 200px;height: 200px;}
 .mask{background-color:rgba(0,0,0,.8);display: none;}
+[data-pop]{
+	transform-origin:center center ;
+	-webkit-transform-origin: center center;
+	transition:all .3s ease;
+	-webkit-transition: all .3s ease;
+}
 .help{
 	display: none;
 	position:fixed;
@@ -368,16 +431,20 @@ keyframes flash{
 	background: #fff;
 	border:1px solid #333;
 	left:50%;top:50%;
-	transform: translate(-50%,-50%);
-	-webkit-transform: translate(-50%,-50%);
+	transform: translate(-50%,-50%) scale(0.1);
+	-webkit-transform: translate(-50%,-50%) scale(0.1);
+}
+.help.show,.correct-pop.show{
+	transform: translate(-50%,-50%) scale(1);
+	-webkit-transform: translate(-50%,-50%) scale(1);
 }
 .correct-pop{
 	display: none;
 	position:absolute;
 	z-index: 10;
 	left: 50%;top: 50%;
-	transform: translate(-50%,-50%);
-	-webkit-transform: translate(-50%,-50%);
+	transform: translate(-50%,-50%) scale(0.1);
+	-webkit-transform: translate(-50%,-50%) scale(0.1);
 	width:278px ;height:360px ;
 	background:url(../img/correct.png) no-repeat;
 	background-size:contain;
@@ -393,14 +460,15 @@ keyframes flash{
 	margin: 0 auto 20px;
 }
 .poem-info{
-	margin: 10px auto;
+	margin: 10px;
 	font-size: 14px;
+	text-align: left;
 }
 .poem-content{
 	line-height:1.2;
 	height:100px;
 	overflow-y:auto ;
-	/*text-align: left;*/
+	text-align: left;
 	padding:0 10px;
 }
 .btn-recite,.btn-first-see,.btn-seen{

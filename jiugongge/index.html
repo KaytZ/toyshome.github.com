@@ -153,7 +153,7 @@
 				poemText      = '',//完整的诗词
 				author        = '',//作者
 				missionIndex  = 0, //当前的关卡
-				stateArr      = [],
+				stateArr      = [],//每首诗词的状态
 				isSelected    = {"index":0,"state":0};
 			/****** 提示框
 			 * str 提示文本
@@ -172,25 +172,28 @@
 			for(var k in data.subjects){
 				stateArr.push(data.subjects[k].state);
 			}
-			console.log(stateArr)
+			
 			//帮助按钮
 			var maskHide=false;
 			function help(){
 				maskHide=true;
 				$(".mask").show();
 				$(".help").show();
+				setTimeout(function(){
+					$(".help").addClass("show")
+				},0)
 			}
 			//遮罩层mask
 			$(".mask").on("click",function(){
 				if(maskHide){
 					$(this).hide();
-					$("[data-pop]").hide();
+					$("[data-pop]").hide().removeClass("show");
 				}
 				maskHide=false;
 			})
 			//返回首页
 			function gohome(){
-				$(".correct-pop").hide();
+				$(".correct-pop").hide().removeClass("show");
 				$(".mask").hide();
 				$(".btn-correct-g .active").removeClass("active");
 				$(".add-one").hide();
@@ -261,7 +264,7 @@
 					//生成答案格子,根据答案长度生成不同的格子数量
 					var answerLen = data.subjects[index-1].answer.length;
 					for(var i=0;i<answerLen;i++){
-						answerBlock+='<div class="answer-words empty"></div>';
+						answerBlock+='<div class="answer-words empty"><span></span></div>';
 					}
 					$(".answer").html(answerBlock);
 					$(".missionNum").text("第"+missionIndex+"关")
@@ -295,9 +298,14 @@
 							}
 							//刷新关卡选择的div
 //							$(".mission").eq(missionIndex).addClass("active").html("<a href='#mission'>"+(~~missionIndex+1)+"</a>");
-							$(".answer-words").addClass("correct")
-							$(".correct-pop").show();
-							$(".mask").show();
+							$(".answer-words").addClass("correct");
+							setTimeout(function(){
+								$(".correct-pop").show();
+								$(".mask").show();
+								setTimeout(function(){
+									$(".correct-pop").addClass("show");
+								},0)
+							},1000)
 							$(".answer-txt").text(answerText);
 							$(".poem-content").html(poemText);
 							$(".poem-info").text("【出自】"+author);
@@ -314,20 +322,26 @@
 							createPicker();
 					}else{
 						$(".answer-words").addClass("wrong");
+						$(".answer").addClass("shake");
 						tip("答错了,点击下方的格子可以取消")
 					}
 					selectWords='';
 				}
 			}
+
 			/********点击九宫格**********/
 			$(".words-block").on("click",function(){
 				//判断点击的是不是空格子
 				if(!$(this).hasClass("empty")&&chooseCount<$(".answer-words").length){
 					var thisText=$(this).text();
-					$(this).addClass("empty").html("");
+					$(this).addClass("empty").find("span").on("transitionend",function(){
+						if($(this).parent().hasClass("empty")){
+							$(this).text("");
+						}
+					});
 					chooseCount++;
-					$(".answer-words.empty").eq(0).text(thisText).removeClass("empty")
-					.attr("data-word-index",$(this).index());
+					$(".answer-words.empty").eq(0).removeClass("empty")
+					.attr("data-word-index",$(this).index()).find("span").text(thisText);
 					//判断答案正确
 					judge();
 				}else if(chooseCount==$(".answer-words").length){
@@ -338,17 +352,17 @@
 			/******点击答案格子*****/
 			$(".answer").on("click",".answer-words",function(){
 				if(chooseCount>0&&!$(this).hasClass("empty")){
-					$(".answer-words").removeClass("flash");
-					$(this).addClass("flash");
-					$(this).on("animationend",function(){
-						$(this).removeClass("flash")						
-					})
+					$(".answer").removeClass("shake");
 					$(".answer-words").removeClass("correct wrong");
 					chooseCount--;
 					var thisText=$(this).text();
-					$(this).text("").addClass("empty");
+					$(this).addClass("empty").find("span").on("transitionend",function(){
+						if($(this).parent().hasClass("empty")){
+							$(this).text("");
+						}
+					});
 					$(".words-block").eq($(this).attr("data-word-index"))
-					.removeClass("empty").html("<span>"+thisText+"</span>");
+					.removeClass("empty").find("span").text(thisText);
 				}
 			})
 			//点击我会背，我见过，首次见
@@ -367,7 +381,7 @@
 					$(".add-one").hide();
 					$(".words-block").removeClass("empty").html("<span></span>");
 					chooseMission(missionIndex+1);
-					$(".correct-pop").hide();
+					$(".correct-pop").hide().removeClass("show");
 					$(".mask").hide();
 					if(~~missionIndex+1>missionCount){
 						tip("这已经是最后一关了")
