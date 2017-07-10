@@ -59,7 +59,11 @@
             	时间：2017-06-30
             	描述：答题区域
             -->
-			<div class="answer"></div>
+            <div class="relative">
+            	<div class="answer"></div>
+            	<img src="img/correct_ico.png" class="result-ico correct-ico" />
+            	<img src="img/wrong_ico.png" class="result-ico wrong-ico" />
+            </div>
 		</div>
 		<div class="tip hide"></div>
 		<!--
@@ -197,6 +201,7 @@
 				$(".mask").hide();
 				$(".btn-correct-g .active").removeClass("active");
 				$(".add-one").hide();
+				$(".result-ico").hide().removeClass("show");
 				$(".words-block").removeClass("empty").html("<span></span>");
 				chooseCount=0;
 				chooseMission(unlockedCount)//修复答完最后一题后，用户返回首页按钮后再点击退回到上一页后九宫格点击的bug
@@ -207,6 +212,8 @@
 				$("[data-pop]").hide();
 				$(".mask").hide();
 				$(".words-block").removeClass("empty");
+				$(".result-ico").hide().removeClass("show");
+				$(".answer").removeClass("shake");
 				chooseCount=0;
 			}
 			/***
@@ -229,23 +236,6 @@
 				}
 			}
 			
-			/*******生成关卡格子
-			 * data-block-index:每个关卡格子的索引
-			 * data-mission-index:每个关卡对应的题目索引（目前题目顺序还未打乱）
-			 * ******/
-//			function createMissionBlock(){
-//				missionBlocks='';
-//				for(var i=1;i<=missionCount;i++){
-//					if(i<=unlockedCount){
-//						missionBlocks+='<div class="mission active" onclick="chooseMission(this)" data-block-index="'+i+'" data-mission-index="'+i+'"><a href="#mission">'+i+'</a></div>';	
-//					}else{
-//						missionBlocks+='<div class="mission" onclick="chooseMission(this)" data-block-index="'+i+'" data-mission-index="'+i+'"><span>'+i+'</span></div>';
-//					}
-//				}
-//				$(".mission-blocks").html(missionBlocks)
-//			}
-//			createMissionBlock();
-			
 			/*******点击关卡格子渲染出对应的题目*******/
 			function chooseMission(index){
 				var answerBlock='';
@@ -267,7 +257,12 @@
 						answerBlock+='<div class="answer-words empty"><span></span></div>';
 					}
 					$(".answer").html(answerBlock);
-					$(".missionNum").text("第"+missionIndex+"关")
+					$(".missionNum").text("第"+missionIndex+"关");
+					setTimeout(function(){
+						var imgX=$(".answer-words:last-child").position().left,
+							xW  =$(".answer-words").width();
+						$(".result-ico").css("left",imgX+xW+4);
+					},0)
 				}else{
 					tip("您选的关卡还未解锁");
 				}
@@ -297,15 +292,18 @@
 								unlockedCount++;
 							}
 							//刷新关卡选择的div
-//							$(".mission").eq(missionIndex).addClass("active").html("<a href='#mission'>"+(~~missionIndex+1)+"</a>");
 							$(".answer-words").addClass("correct");
+							$(".result-ico.correct-ico").show();
+							setTimeout(function(){
+								$(".result-ico.correct-ico").addClass("show");
+							},0)
 							setTimeout(function(){
 								$(".correct-pop").show();
 								$(".mask").show();
-							},1000)
+							},1300)
 							setTimeout(function(){
 								$(".correct-pop").addClass("show");
-							},1100)
+							},1400)
 							$(".answer-txt").text(answerText);
 							$(".poem-content").html(poemText);
 							$(".poem-info").text("【出自】"+author);
@@ -323,6 +321,10 @@
 					}else{
 						$(".answer-words").addClass("wrong");
 						$(".answer").addClass("shake");
+						$(".result-ico.wrong-ico").show();
+						setTimeout(function(){
+							$(".result-ico.wrong-ico").addClass("show");
+						},0)
 						tip("答错了,点击下方的格子可以取消")
 					}
 					selectWords='';
@@ -352,6 +354,7 @@
 			/******点击答案格子*****/
 			$(".answer").on("click",".answer-words",function(){
 				if(chooseCount>0&&!$(this).hasClass("empty")){
+					$(".result-ico").hide().removeClass("show")
 					$(".answer").removeClass("shake");
 					$(".answer-words").removeClass("correct wrong");
 					chooseCount--;
@@ -379,6 +382,7 @@
 					chooseCount=0;
 					$(".btn-correct-g .active").removeClass("active");
 					$(".add-one").hide();
+					$(".result-ico").hide().removeClass("show");
 					$(".words-block").removeClass("empty").html("<span></span>");
 					chooseMission(missionIndex+1);
 					$(".correct-pop").hide().removeClass("show");

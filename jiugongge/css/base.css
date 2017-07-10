@@ -507,3 +507,19 @@ keyframes flash{
 	right:6px;
 	display: none;
 }
+.result-ico{
+	display: none;
+	position:absolute;
+	top:0;
+	width:30px;height:30px;
+	transition: all .5s ease;
+	-webkit-transition: all .5s ease;
+	transform: scale(2);
+	-webkit-transform: scale(2);
+	transform-origin:center center ;
+	-webkit-transform-origin: center center;	
+}
+.result-ico.show{
+	transform: scale(1);
+	-webkit-transform: scale(1);
+}
