@@ -123,7 +123,7 @@
 			</div>
         </div>
 		<div class="mask"></div>
-		<!--<audio src="1.mp3" autoplay></audio>-->
+		<audio src="" id="audio"></audio>
 		<ins class="adsbygoogle" data-ad-client="ca-pub-8023167465237689"data-ad-slot="7138279852"></ins>
 	</div>
 		<script src="js/jquery-1.11.1.min.js"></script>
@@ -136,6 +136,8 @@
 			window.onload=function(){
 				$(".loading-mask").hide();
 				$(".adsbygoogle").css("z-index","9998");
+				$("#audio").attr("src","1.mp3");
+				$("#audio")[0].play();
 			}
 			var data;//模拟的json数据
 			function getUserData(){
