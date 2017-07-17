@@ -4,12 +4,51 @@
 		<meta charset="UTF-8">
 		<title></title>
 	</head>
+	<style type="text/css">
+			#div{
+				position: relative;
+				height:100px;
+				border:1px solid #ccc;
+				overflow: hidden;
+			}
+			#circle{
+				position: absolute;
+				/*display: none;*/
+				height:10px;
+				width:10px;
+				background:#ccc;
+				border-radius: 50%;
+				transition:all .5s linear;
+			}
+			#circle.active{
+				transform:scale(20,20);
+				opacity: 0;
+			}
+	</style>
 	<body>
-		mp3测试页
-		<audio src="1.mp3" autoplay controls id="audio"></audio>
+		
+		<div id="div">
+		</div>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 		<script>
-			var audio=document.getElementById("audio");
-			audio.play();
+			$("#div").on("click",function(e){
+				$(".test").addClass("active")
+				var X=e.pageX;
+					Y=e.pageY;
+				 	div=document.createElement("div");
+					clientRect=this.getBoundingClientRect();
+					div.id="circle";
+					div.style.left=X-clientRect.left+"px";
+					div.style.top=Y-clientRect.top+"px";
+					$(this).append(div);
+					setTimeout(function(){
+						div.className="active";
+					},0)
+			})
+			$("#div").on("transitionend",function(){
+				$("#circle").remove()
+			})
+		
 		</script>
 	</body>
 </html>

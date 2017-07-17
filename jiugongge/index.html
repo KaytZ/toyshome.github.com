@@ -26,7 +26,7 @@
 			<a class="btn btn-choose" id="picker">选关</a>
 			<!--<a class="btn btn-play" id="music">播放(测试)</a>-->
 			<a class="btn btn-more" href="http://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NjEyMTE3Mg==&scene=123#wechat_redirect">更多</a>
-			<div class="tx-c">好七喵书院出品</div>
+			<div class="tx-c" style="margin-top:40px;">好七喵书院出品</div>
 		</div>
 		<!--
         	时间：2017-06-30
@@ -124,11 +124,14 @@
 			</div>
         </div>
 		<div class="mask"></div>
-		<!--<audio src="" id="audio" loop autoplay></audio>-->
+		<audio src="music/click.wav" id="click-bg"></audio>
+		<audio src="music/wrong.wav" id="wrong-bg"></audio>
+		<audio src="music/correct.wav" id="correct-bg"></audio>
 		<ins class="adsbygoogle" data-ad-client="ca-pub-8023167465237689"data-ad-slot="7138279852"></ins>
 	</div>
 		<script src="js/jquery-1.11.1.min.js"></script>
 		<script src="js/mobileSelect.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<script>
 			(adsbygoogle = window.adsbygoogle || []).push({});
@@ -137,9 +140,10 @@
 			window.onload=function(){
 				$(".loading-mask").hide();
 				$(".adsbygoogle").css("z-index","9998");
-//				var audio=document.getElementById("audio");
-//				audio.src="1.mp3";
-//				audio.play();
+				if(location.hash.split("&")[1]=="mission"){
+//					chooseMission(~~localStorage.getItem("missionIndex"));
+//					missionIndex=~~localStorage.getItem("missionIndex");
+				}
 			}
 			var data;//模拟的json数据
 			function getUserData(){
@@ -168,6 +172,10 @@
 			 * str 提示文本
 			 * delay 指定秒数后提示消失，单位是毫秒
 			 * ******/
+			$(".btn").on("click",function(){
+				$("#click-bg")[0].play();
+			})
+			
 			function tip(str,delay){
 				var timer=null;
 				s = delay||1000; 
@@ -243,6 +251,7 @@
 			
 			/*******点击关卡格子渲染出对应的题目*******/
 			function chooseMission(index){
+//				localStorage.missionIndex=index;
 				var answerBlock='';
 					missionIndex = index;
 					answerText   = data.subjects[index-1].answer;
@@ -293,6 +302,7 @@
 					})
 					
 					if(selectWords==answerText){
+						$("#correct-bg")[0].play();
 							if(missionIndex==unlockedCount&&unlockedCount<missionCount){
 								unlockedCount++;
 							}
@@ -324,6 +334,7 @@
 							$(".mobileSelect").remove();
 							createPicker();
 					}else{
+						$("#wrong-bg")[0].play()
 						$(".answer-words").addClass("wrong");
 						$(".answer").addClass("shake");
 						$(".result-ico.wrong-ico").show();
@@ -390,6 +401,7 @@
 					$(".result-ico").hide().removeClass("show");
 					$(".words-block").removeClass("empty").html("<span></span>");
 					chooseMission(missionIndex+1);
+//					localStorage.missionIndex=missionIndex+1;
 					$(".correct-pop").hide().removeClass("show");
 					$(".mask").hide();
 					if(~~missionIndex+1>missionCount){
@@ -451,6 +463,7 @@
 		}
 		createPicker();
 		</script>
+		<script src="js/wx.share.js"></script>
 	</body>
 </html>
 	
