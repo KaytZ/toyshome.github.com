@@ -143,6 +143,7 @@
 				if(location.hash.split("&")[1]=="mission"){
 //					chooseMission(~~localStorage.getItem("missionIndex"));
 //					missionIndex=~~localStorage.getItem("missionIndex");
+//					unlockedCount=~~localStorage.getItem("unlockedCount");
 				}
 			}
 			var data;//模拟的json数据
@@ -172,7 +173,7 @@
 			 * str 提示文本
 			 * delay 指定秒数后提示消失，单位是毫秒
 			 * ******/
-			$(".btn").on("click",function(){
+			$(".btn,.words-block,.answer").on("click",function(){
 				$("#click-bg")[0].play();
 			})
 			
@@ -251,7 +252,9 @@
 			
 			/*******点击关卡格子渲染出对应的题目*******/
 			function chooseMission(index){
+//				console.log(unlockedCount)
 //				localStorage.missionIndex=index;
+//				localStorage.setItem("unlockedCount",unlockedCount);
 				var answerBlock='';
 					missionIndex = index;
 					answerText   = data.subjects[index-1].answer;
@@ -362,6 +365,7 @@
 					.attr("data-word-index",$(this).index()).find("span").text(thisText);
 					//判断答案正确
 					judge();
+//					localStorage.setItem('unlockedCount',unlockedCount);
 				}else if(chooseCount==$(".answer-words").length){
 					judge();
 				}
@@ -401,7 +405,6 @@
 					$(".result-ico").hide().removeClass("show");
 					$(".words-block").removeClass("empty").html("<span></span>");
 					chooseMission(missionIndex+1);
-//					localStorage.missionIndex=missionIndex+1;
 					$(".correct-pop").hide().removeClass("show");
 					$(".mask").hide();
 					if(~~missionIndex+1>missionCount){
