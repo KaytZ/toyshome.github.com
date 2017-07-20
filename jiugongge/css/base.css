@@ -352,7 +352,7 @@ keyframes flash{
 }
 .answer{
 	position:relative;
-	margin-top:30px;
+	margin-top:20px;
 	display: flex;
 	display: -webkit-flex;
 	justify-content: center;
@@ -464,10 +464,13 @@ keyframes flash{
 	font-size: 14px;
 	text-align: left;
 	display: inline-block;
+	height:30px;
+	padding:0 10px;
+	line-height: 1.2;
 }
 .poem-content{
 	line-height:1.2;
-	height:100px;
+	height:80px;
 	overflow-y:auto ;
 	text-align: left;
 	display: inline-block;
@@ -524,4 +527,10 @@ keyframes flash{
 .result-ico.show{
 	transform: scale(1);
 	-webkit-transform: scale(1);
+}
+.btn-group-ctr .btn{
+	width:60px;
+	height:30px;
+	margin-top: 10px;
+	margin-right: 10px;
 }

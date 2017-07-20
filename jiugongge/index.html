@@ -8,7 +8,6 @@
 		<link rel="stylesheet" type="text/css" href="css/mobilebone.css"/>
 		<link rel="stylesheet" href="css/base.css"/>
 		<link rel="stylesheet" href="css/mobileSelect.css" />
-		<!--<script async="" src="//www.google-analytics.com/analytics.js"></script>-->
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<script>
 			(adsbygoogle = window.adsbygoogle || []).push({google_ad_client: "ca-pub-8023167465237689",enable_page_level_ads: true});
@@ -28,18 +27,6 @@
 			<a class="btn btn-more" href="http://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3NjEyMTE3Mg==&scene=123#wechat_redirect">更多</a>
 			<div class="tx-c" style="margin-top:40px;">好七喵书院出品</div>
 		</div>
-		<!--
-        	时间：2017-06-30
-        	描述：选关卡
-        -->
-		<!--<div id="choose-mission" class="page out">
-			<div class="title1">选择关卡</div>
-			<div class="mission-blocks"></div>
-		</div>-->
-		<!--
-			时间：2017-06-30
-        	描述：答题页
-        -->
 		<div id="mission" class="page out">
 			<div class="tx-c ofh relative">
 				<span class="missionNum"></span>
@@ -65,6 +52,11 @@
             	<img src="img/correct_ico.png" class="result-ico correct-ico" />
             	<img src="img/wrong_ico.png" class="result-ico wrong-ico" />
             </div>
+            <div class="tx-c btn-group-ctr">
+            	<button class="btn btn-go-pre" onclick="goPre()">上一关</button>
+            	<button class="btn btn-go-next" onclick="goNext()">下一关</button>
+            	<button class="btn btn-reset" onclick="reset()">清空</button>
+            </div>
 		</div>
 		<div class="tip hide"></div>
 		<!--
@@ -88,30 +80,30 @@
 				<div class="tx-c btn-correct-g" style="margin-top: 10px;">
 					<div class="relative tx-c">
 						<div class="hasSt hide">
-							<div  style="color:#F0AD4E;margin-bottom: 6px;">40%</div>
+							<div  style="color:#F0AD4E;margin-bottom: 6px;" class="recited-precent"></div>
 							<div><b>我会背</b></div>
 						</div>
-						<div class="btn btn-recite">
+						<div class="btn btn-recite" data-operation=1>
 							<div>我会背</div>
 							<img src="img/1.png" class="add-one"/>
 						</div>
 					</div>
 					<div class="relative tx-c">
 						<div class="hasSt hide">
-							<div  style="color:#F0AD4E;margin-bottom: 6px;">40%</div>
+							<div  style="color:#F0AD4E;margin-bottom: 6px;" class="seen-precent"></div>
 							<div><b>我见过</b></div>
 						</div>
-						<div class="btn btn-seen">
+						<div class="btn btn-seen" data-operation=2>
 							<div>我见过</div>
 							<img src="img/1.png" class="add-one"/>
 						</div>
 					</div>
 					<div class="relative tx-c">
 						<div class="hasSt hide">
-							<div  style="color:#F0AD4E;margin-bottom: 6px;">20%</div>
+							<div  style="color:#F0AD4E;margin-bottom: 6px;" class="first-precent"></div>
 							<div><b>首次见</b></div>
 						</div>
-						<div class="btn btn-first-see">
+						<div class="btn btn-first-see" data-operation=3>
 							<div>首次见</div>
 							<img src="img/1.png" class="add-one"/>
 						</div>
@@ -141,42 +133,37 @@
 				$(".loading-mask").hide();
 				$(".adsbygoogle").css("z-index","9998");
 				if(location.hash.split("&")[1]=="mission"){
-//					chooseMission(~~localStorage.getItem("missionIndex"));
-//					missionIndex=~~localStorage.getItem("missionIndex");
-//					unlockedCount=~~localStorage.getItem("unlockedCount");
+//					chooseMission(unlockedCount);
 				}
 			}
-			var data;//模拟的json数据
-			function getUserData(){
-				$.ajax({
-					type:"get",
-					url:"data.json",
-					async:false,
-					success:function(json){
-						data=json;
-					}
-				});
-			}
-			/******页面初始化获取用户数据*******/
-			getUserData();
+			//初始化信息请求
+			$.ajax({
+				type:"get",
+				url:"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxab46b47674714151&redirect_uri=http%3A%2F%2Fquiz.hao7miao.cn%2Fpoetry%2Fapi%2Fv1%2Finit&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect",
+//				url:"http://quiz.hao7miao.cn/poetry/api/v1/init?code=oVKRFw03BBlMM_VlYCz-xwPFzFbI",
+				async:false,
+				success:function(res){
+					console.log(res)
+				}
+			});
 			/****Global Variable*****/
-			var missionCount  = data.missionCount,//总关卡数
-				unlockedCount = data.unlockedCount,//已经解锁的关卡数
+			//openid:oVKRFw5rxaIhUem0q0dxLgP9ZWiI,oVKRFw03BBlMM_VlYCz-xwPFzFbI
+			var missionCount  = 1000,//总关卡数
+				unlockedCount = 3,//已经解锁的关卡数
+				openId        = "oVKRFw5rxaIhUem0q0dxLgP9ZWiI",
 				gridText      = '',//九宫格文本
 				answerText    = '', //题目答案
-				poemText      = '',//完整的诗词
-				author        = '',//作者
-				missionIndex  = 0, //当前的关卡
-				stateArr      = [],//每首诗词的状态
-				isSelected    = {"index":0,"state":0};
+				operation     = 1,//答对弹窗的选择
+				voted         = false,//
+				missionIndex  = 0; //当前的关卡
+
+			$(".btn,.words-block,.answer").on("click",function(){
+				$("#click-bg")[0].play();
+			})
 			/****** 提示框
 			 * str 提示文本
 			 * delay 指定秒数后提示消失，单位是毫秒
 			 * ******/
-			$(".btn,.words-block,.answer").on("click",function(){
-				$("#click-bg")[0].play();
-			})
-			
 			function tip(str,delay){
 				var timer=null;
 				s = delay||1000; 
@@ -186,11 +173,6 @@
 					$(".tip").hide();
 				},s)
 			}
-			//
-			for(var k in data.subjects){
-				stateArr.push(data.subjects[k].state);
-			}
-			
 			//帮助按钮
 			var maskHide=false;
 			function help(){
@@ -211,6 +193,18 @@
 			})
 			//返回首页
 			function gohome(){
+				if(voted==false&&$(".btn-correct-g .active").length==1){
+					operation=$(".btn-correct-g .active").attr("data-operation");
+					$.ajax({
+						type:"get",
+						url:"http://quiz.hao7miao.cn/poetry/api/v1/subject/vote?openid="+openId+"&level="+missionIndex+"&operation="+operation,
+						async:false,
+						success:function(res){
+								console.log(res);
+							}
+						}
+					)
+				}
 				$(".correct-pop").hide().removeClass("show");
 				$(".mask").hide();
 				$(".btn-correct-g .active").removeClass("active");
@@ -219,7 +213,6 @@
 				$(".words-block").removeClass("empty").html("<span></span>");
 				chooseCount=0;
 				chooseMission(unlockedCount)//修复答完最后一题后，用户返回首页按钮后再点击退回到上一页后九宫格点击的bug
-				stateArr[isSelected.index-1]=1;
 			}
 			//页面后退的时候重置状态
 			window.onhashchange=function(){
@@ -230,46 +223,25 @@
 				$(".answer").removeClass("shake");
 				chooseCount=0;
 			}
-			/***
-			 * ***随机排序
-			 * 打乱题号
-			 * 打乱九宫格字符顺序
-			 * ********/
-			function sortRandom(arr){
-				if(arr.constructor==Array){
-					return arr.sort(function(){
-						return Math.random()<0.5;
-					})
-				}
-				else if(arr.constructor==String){
-					return arr.split("").sort(function(){
-						return Math.random()<0.5;
-					})
-				}else{
-					return false;
-				}
-			}
 			
 			/*******点击关卡格子渲染出对应的题目*******/
 			function chooseMission(index){
-//				console.log(unlockedCount)
-//				localStorage.missionIndex=index;
-//				localStorage.setItem("unlockedCount",unlockedCount);
+				//获取题目内容
 				var answerBlock='';
 					missionIndex = index;
-					answerText   = data.subjects[index-1].answer;
-					poemText     = data.subjects[index-1].poem;
-					author       = data.subjects[index-1].author
+					answerText   = '';
+				$.get("http://quiz.hao7miao.cn/poetry/api/v1/subject/get?level="+missionIndex+"&openid="+openId,function(res){
+				console.log(res);
 				//判断点击的是否是解锁的关卡
 				if(missionIndex<=unlockedCount){
 					//gridText 打乱顺序后的九宫格内容
-					gridText=sortRandom(data.subjects[index-1].words);
+					gridText=res.data.words;
 					//将文字填入九宫格
 					$(".words-block>span").each(function(index,item){
 						$(this).text(gridText[index]);
 					})
 					//生成答案格子,根据答案长度生成不同的格子数量
-					var answerLen = data.subjects[index-1].answer.length;
+					var answerLen = res.data.answerCount;
 					for(var i=0;i<answerLen;i++){
 						answerBlock+='<div class="answer-words empty"><span></span></div>';
 					}
@@ -292,6 +264,7 @@
 					$(".btn-gohome").hide();
 					$(".btn-next").show();
 				}
+				})
 			}
 			
 			var chooseCount=0;//已经选择的字符数
@@ -304,49 +277,61 @@
 						selectWords+=$(this).text();
 					})
 					
-					if(selectWords==answerText){
-						$("#correct-bg")[0].play();
-							if(missionIndex==unlockedCount&&unlockedCount<missionCount){
-								unlockedCount++;
-							}
-							//刷新关卡选择的div
-							$(".answer-words").addClass("correct");
-							$(".result-ico.correct-ico").show();
+					$.get("http://quiz.hao7miao.cn/poetry/api/v1/subject/validate?level="+missionIndex+"&openid="+openId+"&answer="+selectWords,
+						function(res){
+							console.log(res);
+							//sta==0 回答正确
+							if(res.sta==0){
+								voted=res.data.haveVoted;
+								$("#correct-bg")[0].play();
+								if(missionIndex==unlockedCount&&unlockedCount<missionCount){
+									unlockedCount++;
+								}
+								//刷新关卡选择的div
+								$(".answer-words").addClass("correct");
+								$(".result-ico.correct-ico").show();
+								setTimeout(function(){
+									$(".result-ico.correct-ico").addClass("show");
+								},0)
+								setTimeout(function(){
+									$(".correct-pop").show();
+									$(".mask").show();
+								},1300)
+								setTimeout(function(){
+									$(".correct-pop").addClass("show");
+								},1400)
+								$(".answer-txt").text(selectWords);
+								$(".poem-content").html(res.data.poem);
+								$(".poem-info").text("【出自】"+res.data.author);
+								if(voted){
+									$.get("http://quiz.hao7miao.cn/poetry/api/v1/subject/vote?openid="+openId+"&level="+missionIndex+"&operation=1",
+										function(res){
+											console.log(res);
+											$(".btn-correct-g .btn").hide();
+											$(".hasSt").show();
+											$(".first-precent").text(res.data.first_percent);
+											$(".recited-precent").text(res.data.recited_percent);
+											$(".seen-precent").text(res.data.seen_percent);
+										}
+									)
+								}else{
+									$(".btn-correct-g .btn").show();
+									$(".hasSt").hide();
+								}
+								$(".mobileSelect").remove();
+								createPicker();
+						}else{
+							$("#wrong-bg")[0].play()
+							$(".answer-words").addClass("wrong");
+							$(".answer").addClass("shake");
+							$(".result-ico.wrong-ico").show();
 							setTimeout(function(){
-								$(".result-ico.correct-ico").addClass("show");
+								$(".result-ico.wrong-ico").addClass("show");
 							},0)
-							setTimeout(function(){
-								$(".correct-pop").show();
-								$(".mask").show();
-							},1300)
-							setTimeout(function(){
-								$(".correct-pop").addClass("show");
-							},1400)
-							$(".answer-txt").text(answerText);
-							$(".poem-content").html(poemText);
-							$(".poem-info").text("【出自】"+author);
-							sState=stateArr[missionIndex-1];
-							if(sState!=0){
-								$(".btn-correct-g .btn").hide();
-								$(".hasSt").show();
-							}else{
-								$(".btn-correct-g .btn").show();
-								$(".hasSt").hide();
-							}
-							
-							$(".mobileSelect").remove();
-							createPicker();
-					}else{
-						$("#wrong-bg")[0].play()
-						$(".answer-words").addClass("wrong");
-						$(".answer").addClass("shake");
-						$(".result-ico.wrong-ico").show();
-						setTimeout(function(){
-							$(".result-ico.wrong-ico").addClass("show");
-						},0)
-						tip("答错了,点击下方的格子可以取消")
-					}
-					selectWords='';
+							tip("答错了,点击下方的格子可以取消")
+						}
+						selectWords='';
+					})
 				}
 			}
 
@@ -388,38 +373,81 @@
 					.removeClass("empty").find("span").text(thisText);
 				}
 			})
+			//清空
+			function reset(){
+				$(".result-ico").hide().removeClass("show")
+				$(".answer").removeClass("shake");
+				chooseCount=0;
+				selectWords='';
+				var tempArr=[];
+				$(".answer-words:not('.empty')").each(function(){
+				   tempArr.push($(this).find("span").text())
+				})
+				$(".words-block.empty").each(function(index,item){
+					$(this).removeClass("empty").find("span").text(tempArr[index])
+				})
+				$(".answer-words").removeClass("correct wrong").addClass("empty");
+			}
+			//快速跳关
+			function goNext(){
+				if(missionIndex+1>unlockedCount){
+					tip("下一关还未解锁")					
+				}else{
+					chooseMission(missionIndex+1);
+					tip("切换成功")
+				}
+			}
+			function goPre(){
+				if(missionIndex-1<1){
+					tip("这已经是第一关了")
+				}else{
+					chooseMission(missionIndex-1);
+					tip("切换成功")
+				}
+			}
 			//点击我会背，我见过，首次见
 			$(".btn-correct-g").on("click",".btn",function(){
 				$(".btn-correct-g .btn").removeClass("active");
 				$(".add-one").hide();
 				$(this).find(".add-one").show();
 				$(this).addClass("active");
-				isSelected.index=missionIndex;
 			})
 			//下一关
 			function nextMission(){
-					//题目状态变量重置
-					chooseCount=0;
-					$(".btn-correct-g .active").removeClass("active");
-					$(".add-one").hide();
-					$(".result-ico").hide().removeClass("show");
-					$(".words-block").removeClass("empty").html("<span></span>");
-					chooseMission(missionIndex+1);
-					$(".correct-pop").hide().removeClass("show");
-					$(".mask").hide();
-					if(~~missionIndex+1>missionCount){
-						tip("这已经是最后一关了")
-					}else{
-						tip("这是第"+missionIndex+"关");
-					}
-				stateArr[isSelected.index-1]=1;
+				//题目状态变量重置
+				chooseCount=0;
+//				missionIndex++;
+				if(voted==false&&$(".btn-correct-g .active").length==1){
+					operation=$(".btn-correct-g .active").attr("data-operation");
+					$.ajax({
+						type:"get",
+						url:"http://quiz.hao7miao.cn/poetry/api/v1/subject/vote?openid="+openId+"&level="+missionIndex+"&operation="+operation,
+						async:false,
+						success:function(res){
+								console.log(res);
+							}
+						}
+					)
+				}
+				$(".btn-correct-g .active").removeClass("active");
+				$(".add-one").hide();
+				$(".result-ico").hide().removeClass("show");
+				$(".words-block").removeClass("empty").html("<span></span>");
+				chooseMission(missionIndex+1);
+				$(".correct-pop").hide().removeClass("show");
+				$(".mask").hide();
+				if(~~missionIndex+1>missionCount){
+					tip("这已经是最后一关了")
+				}else{
+					tip("这是第"+missionIndex+"关");
+				}
 			}
 		/******点击开始*******/
 		$(".btn-begin").on("click",function(){
 			$(".words-block").removeClass("empty").html("<span></span>");
 			$(".add-one").hide();
 			$(".btn-correct-g .active").removeClass("active");
-			chooseMission(unlockedCount)			
+			chooseMission(unlockedCount)
 		})
 		
 			//选关，picker插件
@@ -466,7 +494,7 @@
 		}
 		createPicker();
 		</script>
-		<script src="js/wx.share.js"></script>
+		<!--<script src="js/wx.share.js"></script>-->
 	</body>
 </html>
 	
