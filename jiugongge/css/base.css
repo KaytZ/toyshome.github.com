@@ -534,3 +534,6 @@ keyframes flash{
 	margin-top: 10px;
 	margin-right: 10px;
 }
+.btn-group-ctr .btn:last-child{
+	margin-right:0;
+}
