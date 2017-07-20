@@ -198,7 +198,7 @@
 					operation=$(".btn-correct-g .active").attr("data-operation");
 					$.ajax({
 						type:"get",
-						url:"http://quiz.hao7miao.cn/poetry/api/v1/subject/vote?openid="+openId+"&level="+missionIndex+"&operation="+operation,
+						url:"quiz.hao7miao.cn/poetry/api/v1/subject/vote?openid="+openId+"&level="+missionIndex+"&operation="+operation,
 						async:false,
 						success:function(res){
 								console.log(res);
@@ -231,7 +231,7 @@
 				var answerBlock='';
 					missionIndex = index;
 					answerText   = '';
-				$.get("http://quiz.hao7miao.cn/poetry/api/v1/subject/get?level="+missionIndex+"&openid="+openId,function(res){
+				$.get("quiz.hao7miao.cn/poetry/api/v1/subject/get?level="+missionIndex+"&openid="+openId,function(res){
 				console.log(res);
 				//判断点击的是否是解锁的关卡
 				if(missionIndex<=unlockedCount){
@@ -278,7 +278,7 @@
 						selectWords+=$(this).text();
 					})
 					
-					$.get("http://quiz.hao7miao.cn/poetry/api/v1/subject/validate?level="+missionIndex+"&openid="+openId+"&answer="+selectWords,
+					$.get("quiz.hao7miao.cn/poetry/api/v1/subject/validate?level="+missionIndex+"&openid="+openId+"&answer="+selectWords,
 						function(res){
 							console.log(res);
 							//sta==0 回答正确
@@ -305,7 +305,7 @@
 								$(".poem-content").html(res.data.poem);
 								$(".poem-info").text("【出自】"+res.data.author);
 								if(voted){
-									$.get("http://quiz.hao7miao.cn/poetry/api/v1/subject/vote?openid="+openId+"&level="+missionIndex+"&operation=1",
+									$.get("quiz.hao7miao.cn/poetry/api/v1/subject/vote?openid="+openId+"&level="+missionIndex+"&operation=1",
 										function(res){
 											console.log(res);
 											$(".btn-correct-g .btn").hide();
@@ -422,7 +422,7 @@
 					operation=$(".btn-correct-g .active").attr("data-operation");
 					$.ajax({
 						type:"get",
-						url:"http://quiz.hao7miao.cn/poetry/api/v1/subject/vote?openid="+openId+"&level="+missionIndex+"&operation="+operation,
+						url:"quiz.hao7miao.cn/poetry/api/v1/subject/vote?openid="+openId+"&level="+missionIndex+"&operation="+operation,
 						async:false,
 						success:function(res){
 								console.log(res);
